@@ -9,7 +9,7 @@
 **Company size:** 2–10 employees  
 **Company type:** Privately Held  
 **Founded:** 2026  
-**Headquarters:** Berlin, Germany  
+**Headquarters:** Germany  
 **Specialties:** Agentic AI, AI Automation, Enterprise AI, Software Consulting, Insurance Technology, Fintech
 
 ---
@@ -25,7 +25,7 @@ Agentic software for serious business.
 ## About Section (2,000 chars max)
 
 ```
-Factiv is a Berlin-based software consultancy specialising in agentic applications — AI systems that don't just answer questions, they take actions, run processes, and operate autonomously inside real business workflows.
+Factiv is a Germany-based software consultancy specialising in agentic applications — AI systems that don't just answer questions, they take actions, run processes, and operate autonomously inside real business workflows.
 
 We work with companies in insurance, finance, and regulated industries who need AI that is reliable, auditable, and production-grade. Not demos. Not pilots. Working software.
 
@@ -37,7 +37,7 @@ What we build:
 
 Our approach is direct. We scope clearly, build iteratively, test rigorously, and hand over systems your team can own and maintain. We work with a small number of clients at a time — by design.
 
-Founded in Berlin in 2026. Privacy-first infrastructure. GDPR-compliant by default.
+Founded in 2026. Privacy-first infrastructure. GDPR-compliant by default.
 ```
 
 ---
@@ -47,7 +47,7 @@ Founded in Berlin in 2026. Privacy-first infrastructure. GDPR-compliant by defau
 ```
 We're live.
 
-Factiv is a Berlin-based consultancy building agentic AI applications for insurance, finance, and regulated enterprise.
+Factiv is a Germany-based consultancy building agentic AI applications for insurance, finance, and regulated enterprise.
 
 "Agentic" has become a buzzword. We'd like to make it something else: working software.
 
@@ -59,7 +59,7 @@ If you're working on an AI initiative in a regulated industry and the engineerin
 
 hello@factiv.de | factiv.de
 
-#AgenticAI #EnterpriseAI #Insurtech #Fintech #Berlin #AIConsulting
+#AgenticAI #EnterpriseAI #Insurtech #Fintech #Germany #AIConsulting
 ```
 
 ---
@@ -96,7 +96,7 @@ The third question is the one most projects skip.
 - [ ] Add Bernard as Admin once onboarded
 - [ ] Connect to Donald's personal LinkedIn profile ("I work here")
 - [ ] Publish launch post on day one
-- [ ] Follow relevant hashtags: #AgenticAI #Insurtech #Fintech #Berlin #KI
+- [ ] Follow relevant hashtags: #AgenticAI #Insurtech #Fintech #Germany #KI
 - [ ] Follow 20 target companies in DE insurance/finance space
 
 ---
@@ -117,10 +117,10 @@ Create in Canva using the brand kit from Looka, or export directly from Looka's 
 ## Personal Profile — Donald (update these)
 
 **Headline:**  
-`Founder at Factiv · Agentic AI for Insurance & Finance · Berlin`
+`Founder at Factiv · Agentic AI for Insurance & Finance · Germany`
 
 **About section addition:**  
-`Alongside my work at neuroflash, I founded Factiv — a Berlin-based consultancy building agentic AI applications for regulated industries. We help insurance and finance companies move from AI pilots to production-grade autonomous systems. Get in touch: donald@factiv.de`
+`Alongside my work at neuroflash, I founded Factiv — a Germany-based consultancy building agentic AI applications for regulated industries. We help insurance and finance companies move from AI pilots to production-grade autonomous systems. Get in touch: donald@factiv.de`
 
 **Featured section:**  
 Pin the Factiv company page once created.

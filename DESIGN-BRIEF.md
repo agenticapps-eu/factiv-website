@@ -13,7 +13,7 @@
 **Tagline:** Agentic software for serious business  
 **Industry:** B2B AI / Software Consultancy  
 **Target clients:** German enterprise — insurance, finance, regulated industries  
-**Founded:** Berlin, 2026  
+**Founded:** Germany, 2026  
 **Tone:** Precise, confident, no-bullshit. Think Linear meets a German engineering firm.
 
 ### Colours
@@ -78,7 +78,7 @@ This site should have **significant, purposeful movement**. Not decorative anima
 - Transparent → opaque on scroll
 
 ### 2. Hero
-- Eyebrow: `Berlin · Germany · Est. 2026`
+- Eyebrow: `Germany · Est. 2026`
 - Headline: `FACTIV` in massive Bebas Neue — `I` in gold, rest white
 - Subheadline: one-sentence pitch in Open Sans Light
 - Two CTAs: primary (gold fill) + ghost
@@ -86,7 +86,7 @@ This site should have **significant, purposeful movement**. Not decorative anima
 - Hexagon watermark SVG right side, very low opacity, floating
 
 ### 3. Ticker Bar (gold background)
-- Continuous scroll: Agentic Apps · AI Automation · Process Intelligence · Enterprise AI · Serious Business · Berlin, Germany
+- Continuous scroll: Agentic Apps · AI Automation · Process Intelligence · Enterprise AI · Serious Business · Germany
 
 ### 4. What We Do
 - Section label: `01 — What We Do`
@@ -101,14 +101,14 @@ This site should have **significant, purposeful movement**. Not decorative anima
 - Supporting paragraph
 
 ### 6. Metrics (gold background)
-- Three counters: `100%` focus on agentic AI / `2` regulated industries / `1` city: Berlin
+- Three counters: `100%` focus on agentic AI / `2` regulated industries / `1` country: Germany
 
 ### 7. Process (4 columns)
 - Section: `03 — How We Work` / `Focused. Fast. Honest.`
 - Four steps with top border lines: Discovery · Architecture · Build & Test · Deploy & Handover
 
 ### 8. About
-- Section: `04 — About Factiv` / `Built in Berlin. Built for Scale.`
+- Section: `04 — About Factiv` / `Built in Germany. Built for Scale.`
 - Two-column: copy left, three detail cards right
 - Cards: Privacy-First / German Engineering Standards / Domain-Specific Expertise
 
