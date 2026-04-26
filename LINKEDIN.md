@@ -4,7 +4,7 @@
 
 **Company name:** Factiv  
 **LinkedIn URL (request):** linkedin.com/company/factiv  
-**Website:** https://factiv.de  
+**Website:** https://factiv.eu  
 **Industry:** Information Technology & Services  
 **Company size:** 2–10 employees  
 **Company type:** Privately Held  
@@ -57,7 +57,7 @@ That's what we build.
 
 If you're working on an AI initiative in a regulated industry and the engineering reality hasn't caught up with the ambition — let's talk.
 
-hello@factiv.de | factiv.de
+hello@factiv.eu | factiv.eu
 
 #AgenticAI #EnterpriseAI #Insurtech #Fintech #Germany #AIConsulting
 ```
@@ -120,7 +120,7 @@ Create in Canva using the brand kit from Looka, or export directly from Looka's 
 `Founder at Factiv · Agentic AI for Insurance & Finance · Germany`
 
 **About section addition:**  
-`Alongside my work at neuroflash, I founded Factiv — a Germany-based consultancy building agentic AI applications for regulated industries. We help insurance and finance companies move from AI pilots to production-grade autonomous systems. Get in touch: donald@factiv.de`
+`Alongside my work at neuroflash, I founded Factiv — a Germany-based consultancy building agentic AI applications for regulated industries. We help insurance and finance companies move from AI pilots to production-grade autonomous systems. Get in touch: donald@factiv.eu`
 
 **Featured section:**  
 Pin the Factiv company page once created.

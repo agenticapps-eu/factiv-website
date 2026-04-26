@@ -10,8 +10,8 @@ Run these commands in your terminal (requires gh CLI or GitHub PAT):
 gh auth login
 gh repo create agenticapps-eu/factiv-website \
   --public \
-  --description "Factiv company website — factiv.de" \
-  --homepage "https://factiv.de"
+  --description "Factiv company website — factiv.eu" \
+  --homepage "https://factiv.eu"
 ```
 
 ### Option B — GitHub API (curl)
@@ -22,8 +22,8 @@ curl -X POST \
   https://api.github.com/orgs/agenticapps-eu/repos \
   -d '{
     "name": "factiv-website",
-    "description": "Factiv company website — factiv.de",
-    "homepage": "https://factiv.de",
+    "description": "Factiv company website — factiv.eu",
+    "homepage": "https://factiv.eu",
     "private": false,
     "auto_init": false
   }'
@@ -33,7 +33,7 @@ curl -X POST \
 1. Go to github.com/agenticapps-eu
 2. Click **New repository**
 3. Name: `factiv-website`
-4. Description: `Factiv company website — factiv.de`
+4. Description: `Factiv company website — factiv.eu`
 5. Public ✓
 6. Do NOT initialise with README (we'll push our own)
 
@@ -93,16 +93,16 @@ Once the repo exists:
 3. Save
 4. Site will be live at: `agenticapps-eu.github.io/factiv-website`
 
-Then point `factiv.de` DNS to GitHub Pages:
+Then point `factiv.eu` DNS to GitHub Pages:
 - In IONOS DNS, add a CNAME record: `www` → `agenticapps-eu.github.io`
-- For the apex domain (`factiv.de`), add four A records:
+- For the apex domain (`factiv.eu`), add four A records:
   ```
   185.199.108.153
   185.199.109.153
   185.199.110.153
   185.199.111.153
   ```
-- In repo Settings → Pages → Custom domain: enter `factiv.de`
+- In repo Settings → Pages → Custom domain: enter `factiv.eu`
 - Check "Enforce HTTPS" once DNS propagates (24–48h for .de)
 
 ---

@@ -1,7 +1,7 @@
 # Factiv Website — Claude Design Brief
 
 **Project:** Factiv one-page marketing website  
-**Domain:** factiv.de  
+**Domain:** factiv.eu  
 **Date:** April 2026  
 **Prepared for:** Claude Design / Figma handoff
 
@@ -115,7 +115,7 @@ This site should have **significant, purposeful movement**. Not decorative anima
 ### 9. Contact
 - Centred layout
 - Large headline: `LET'S BUILD SOMETHING REAL.`
-- Email link: `hello@factiv.de`
+- Email link: `hello@factiv.eu`
 - Footer: copyright + nav links + Impressum / Datenschutz
 
 ---
