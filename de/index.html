@@ -156,6 +156,7 @@ footer{border-top:1px solid var(--border);margin-top:100px;padding-top:40px;disp
   #bg-canvas{display:none}
 }
 </style>
+<link rel="stylesheet" href="../assets/motion.css">
 </head>
 <body>
 <div id="cur"></div>
@@ -283,8 +284,8 @@ footer{border-top:1px solid var(--border);margin-top:100px;padding-top:40px;disp
     <ul class="footer-links">
       <li><a href="https://linkedin.com/company/factiv" target="_blank" rel="noopener">LinkedIn</a></li>
       <li><a href="mailto:hello@factiv.eu">E-Mail</a></li>
-      <li><a href="#">Impressum</a></li>
-      <li><a href="#">Datenschutz</a></li>
+      <li><a href="/de/impressum.html">Impressum</a></li>
+      <li><a href="/de/datenschutz.html">Datenschutz</a></li>
     </ul>
   </footer>
 </section>
@@ -362,5 +363,6 @@ const cobs=new IntersectionObserver(es=>{
 },{threshold:.4});
 document.querySelectorAll('[data-target]').forEach(el=>cobs.observe(el));
 </script>
+<script src="../assets/motion.js" defer></script>
 </body>
 </html>
