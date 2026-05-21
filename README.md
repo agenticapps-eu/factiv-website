@@ -110,4 +110,4 @@ Then point `factiv.eu` DNS to GitHub Pages:
 ## Topics to add to repo (for discoverability)
 
 In repo Settings → Topics, add:
-`agentic-ai`, `ai`, `berlin`, `consultancy`, `landing-page`
+`agentic-ai`, `ai`, `germany`, `consultancy`, `landing-page`
