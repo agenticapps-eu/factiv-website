@@ -181,11 +181,11 @@ footer{border-top:1px solid var(--border);margin-top:100px;padding-top:40px;disp
     <li><a href="#contact">Kontakt</a></li>
   </ul>
   <div class="nav-right">
-    <div class="lang-switch" aria-label="Sprache">
+    <nav class="lang-switch" aria-label="Sprache">
       <a href="/" hreflang="en">EN</a>
       <span>·</span>
       <a href="/de/" class="active" aria-current="page">DE</a>
-    </div>
+    </nav>
     <a href="mailto:hello@factiv.eu" class="nav-cta">Projekt starten</a>
   </div>
 </nav>
@@ -282,7 +282,7 @@ footer{border-top:1px solid var(--border);margin-top:100px;padding-top:40px;disp
   <footer>
     <span>© 2026 Factiv · Deutschland</span>
     <ul class="footer-links">
-      <li><a href="https://linkedin.com/company/factiv" target="_blank" rel="noopener">LinkedIn</a></li>
+      <li><a href="https://linkedin.com/company/factiv" target="_blank" rel="noopener noreferrer">LinkedIn</a></li>
       <li><a href="mailto:hello@factiv.eu">E-Mail</a></li>
       <li><a href="/de/impressum.html">Impressum</a></li>
       <li><a href="/de/datenschutz.html">Datenschutz</a></li>
@@ -291,10 +291,13 @@ footer{border-top:1px solid var(--border);margin-top:100px;padding-top:40px;disp
 </section>
 
 <script>
+const RM = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 const cur=document.getElementById('cur'),ring=document.getElementById('cur-ring');
 let mx=0,my=0,rx=0,ry=0;
-document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cur.style.left=mx+'px';cur.style.top=my+'px'});
-(function loop(){rx+=(mx-rx)*.12;ry+=(my-ry)*.12;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(loop)})();
+if(!RM){
+  document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cur.style.left=mx+'px';cur.style.top=my+'px'});
+  (function loop(){rx+=(mx-rx)*.12;ry+=(my-ry)*.12;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(loop)})();
+}
 window.addEventListener('scroll',()=>document.getElementById('nav').classList.toggle('scrolled',scrollY>60));
 
 const cv=document.getElementById('bg-canvas'),ctx=cv.getContext('2d');
@@ -330,7 +333,7 @@ function drawGhostWave(x,y,scale,alpha){
   ctx.globalAlpha=1;
 }
 
-(function frame(){
+if(!RM)(function frame(){
   ctx.clearRect(0,0,W,H);
   pts.forEach(p=>{
     p.x=(p.x+p.vx+W)%W;p.y=(p.y+p.vy+H)%H;
@@ -356,6 +359,7 @@ const cobs=new IntersectionObserver(es=>{
   es.forEach(e=>{
     if(!e.isIntersecting)return;
     const el=e.target,target=+el.dataset.target;
+    if(RM){el.textContent=target;cobs.unobserve(el);return}
     let n=0;const step=target/55;
     const t=setInterval(()=>{n=Math.min(n+step,target);el.textContent=Math.round(n);if(n>=target)clearInterval(t)},18);
     cobs.unobserve(el);

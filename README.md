@@ -96,14 +96,14 @@ Once the repo exists:
 Then point `factiv.eu` DNS to GitHub Pages:
 - In IONOS DNS, add a CNAME record: `www` → `agenticapps-eu.github.io`
 - For the apex domain (`factiv.eu`), add four A records:
-  ```
+  ```text
   185.199.108.153
   185.199.109.153
   185.199.110.153
   185.199.111.153
   ```
 - In repo Settings → Pages → Custom domain: enter `factiv.eu`
-- Check "Enforce HTTPS" once DNS propagates (24–48h for .de)
+- Check "Enforce HTTPS" once DNS propagates (often 24–48h for .eu)
 
 ---
 
