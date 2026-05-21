@@ -39,9 +39,10 @@
     animation-range: entry 0% cover 25%;
   }
   /* Manifesto: outline -> solid gold fill */
+  #manifesto{view-timeline-name: --manifesto; view-timeline-axis: block}
   .manifesto-text .outline{
     animation: factiv-outline-fill linear both;
-    animation-timeline: view(#manifesto);
+    animation-timeline: --manifesto;
     animation-range: entry 25% cover 65%;
   }
 }
