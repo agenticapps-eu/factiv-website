@@ -1,0 +1,75 @@
+/* ============================================================
+   Factiv motion layer — Session 3 (21 May 2026)
+   WebGL mesh / scramble / magnetic CTAs / scroll-driven sections
+   / manifesto outline-fill. All gated behind prefers-reduced-motion.
+   ============================================================ */
+
+/* WebGL canvas sits behind the existing #bg-canvas */
+#bg-gl{position:fixed;inset:0;z-index:0;opacity:.55;pointer-events:none}
+#bg-canvas{z-index:1;opacity:.35}
+
+/* Hero title — scramble effect needs no-wrap and stable width */
+.hero-title{white-space:nowrap}
+.hero-title.scrambling{cursor:default}
+.hero-title .t2{transition:color .15s}
+.hero-title.scrambling .t1,
+.hero-title.scrambling .t3{color:var(--gold-lt)}
+
+/* Magnetic CTAs — transition handles the spring-return */
+.btn-primary,.btn-ghost{transition:background .2s,color .2s,border-color .2s,
+  transform .25s cubic-bezier(.18,.89,.32,1.28)}
+.btn-primary.magnet-active,.btn-ghost.magnet-active{transition:transform .04s linear}
+
+/* Section-label digit-flip — JS swaps the number; the label stays in the same slot */
+.section-label .digit{display:inline-block;font-variant-numeric:tabular-nums}
+
+/* Scroll-driven section parallax + label slide-up.
+   Modern Chrome/Edge supports animation-timeline:view().
+   Older browsers fall through to the existing .reveal IntersectionObserver path. */
+@supports (animation-timeline: view()) {
+  section .section-title{
+    animation: factiv-title-rise linear both;
+    animation-timeline: view();
+    animation-range: entry 0% cover 35%;
+    will-change:transform,opacity;
+  }
+  section .section-label{
+    animation: factiv-label-slide linear both;
+    animation-timeline: view();
+    animation-range: entry 0% cover 25%;
+  }
+  /* Manifesto: outline -> solid gold fill */
+  #manifesto{view-timeline-name: --manifesto; view-timeline-axis: block}
+  .manifesto-text .outline{
+    animation: factiv-outline-fill linear both;
+    animation-timeline: --manifesto;
+    animation-range: entry 25% cover 65%;
+  }
+}
+
+@keyframes factiv-title-rise{
+  from{transform:translateY(18px);opacity:.55}
+  to  {transform:translateY(0);   opacity:1}
+}
+@keyframes factiv-label-slide{
+  from{transform:translateX(-12px);opacity:0}
+  to  {transform:translateX(0);    opacity:1}
+}
+@keyframes factiv-outline-fill{
+  from{color:transparent;-webkit-text-stroke:1px var(--gold)}
+  to  {color:var(--gold); -webkit-text-stroke:1px transparent}
+}
+
+/* Reduced-motion: collapse everything cleanly */
+@media (prefers-reduced-motion: reduce){
+  #bg-gl{display:none}
+  .hero-title{white-space:normal}
+  .btn-primary,.btn-ghost{transition:background .2s,color .2s,border-color .2s}
+  @supports (animation-timeline: view()) {
+    section .section-title,
+    section .section-label,
+    .manifesto-text .outline{animation:none}
+  }
+  /* Manifesto outline stays as the original outlined style — already covered by the
+     base .outline rule in the inline <style>. */
+}
