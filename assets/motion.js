@@ -235,6 +235,156 @@
     Array.prototype.forEach.call(labels, function (l) { obs.observe(l); });
   }
 
+  /* ---------- 5. Interactive 7-bar wavemark ----------------- */
+  function startWaveform() {
+    var host = document.querySelector('.hero-wave');
+    if (!host) return;
+    var bars = host.querySelectorAll('.hero-wave-bar');
+    if (bars.length !== 7) return;
+
+    // Rest envelope — symmetric, centre tallest. Echoes the 6-bar watermark glyph.
+    var rest  = [0.35, 0.75, 0.55, 1.00, 0.55, 0.75, 0.35];
+    // Phase offsets so idle drift breathes out of sync across bars.
+    var phase = [0.0,  0.7,  1.4,  2.1,  2.8,  3.5,  4.2];
+
+    function setScale(i, s) {
+      bars[i].style.setProperty('--scale', s.toFixed(3));
+    }
+
+    // Reduced motion: snap to rest, do nothing else.
+    if (REDUCED) {
+      for (var i = 0; i < bars.length; i++) setScale(i, rest[i]);
+      return;
+    }
+
+    var hover = null; // {x: 0..1} or null
+
+    function update(clientX) {
+      var r = host.getBoundingClientRect();
+      if (r.width <= 0) return;
+      hover = { x: Math.max(0, Math.min(1, (clientX - r.left) / r.width)) };
+    }
+
+    host.addEventListener('mousemove',  function (e) { update(e.clientX); },               { passive: true });
+    host.addEventListener('mouseleave', function ()  { hover = null; });
+    host.addEventListener('touchstart', function (e) { if (e.touches[0]) update(e.touches[0].clientX); }, { passive: true });
+    host.addEventListener('touchmove',  function (e) { if (e.touches[0]) update(e.touches[0].clientX); }, { passive: true });
+    host.addEventListener('touchend',   function ()  { hover = null; });
+
+    // Only burn frames while the wavemark is in view.
+    var active = true;
+    if ('IntersectionObserver' in window) {
+      var io = new IntersectionObserver(function (entries) {
+        active = entries[0].isIntersecting;
+      }, { threshold: 0.01 });
+      io.observe(host);
+    }
+
+    var t0 = performance.now();
+    (function frame() {
+      if (active) {
+        var t = (performance.now() - t0) / 1000;
+        for (var i = 0; i < bars.length; i++) {
+          var ti = i / (bars.length - 1);
+          // Idle drift: ±0.04 amplitude, ~6s period, per-bar phase offset.
+          var drift = Math.sin(t * (Math.PI * 2 / 6) + phase[i]) * 0.04;
+          var scale = rest[i] + drift;
+          if (hover) {
+            var d = Math.abs(ti - hover.x);
+            // 7 bars span a wider x-range each than V4's 24 bars, so use a gentler
+            // falloff (*4 instead of *6).
+            var peak = Math.max(0, 1 - d * 4);
+            scale = rest[i] + drift + peak * 0.5;
+          }
+          if (scale < 0.08) scale = 0.08;
+          if (scale > 1.05) scale = 1.05;
+          setScale(i, scale);
+        }
+      }
+      requestAnimationFrame(frame);
+    })();
+  }
+
+  /* ---------- 6. Cycling hero pivot (ships → runs → pays) --- */
+  // Single source of truth for the cycling claim. Per-locale labels live on each
+  // element as data-label-{mode} so EN and DE share this JS unchanged.
+  var pivotState = { i: 0, modes: ['ships', 'runs', 'pays'], listeners: [] };
+
+  function setPivotMode(mode) {
+    var idx = pivotState.modes.indexOf(mode);
+    if (idx < 0) return;
+    pivotState.i = idx;
+    pivotState.listeners.forEach(function (fn) { fn(mode); });
+  }
+
+  function labelFor(el, mode) {
+    return el.getAttribute('data-label-' + mode) || el.textContent;
+  }
+
+  function startCyclingPivot() {
+    var pivot = document.querySelector('.hero-pivot');
+    var subPivot = document.querySelector('.hero-sub-pivot');
+    if (!pivot) return;
+
+    pivotState.listeners.push(function (mode) {
+      pivot.textContent = labelFor(pivot, mode);
+      pivot.setAttribute('data-mode', mode);
+      if (subPivot) subPivot.textContent = labelFor(subPivot, mode);
+    });
+
+    pivot.addEventListener('click', function () {
+      setPivotMode(pivotState.modes[(pivotState.i + 1) % pivotState.modes.length]);
+    });
+  }
+
+  /* ---------- 7. Wavemark pills + touch auto-cycle ---------- */
+  // Pills are a second control surface for the same pivotState. On touch devices
+  // (no hover), the mode auto-cycles every 4 s and pauses for 8 s after any user
+  // interaction.
+  function startPillsAndAutoCycle() {
+    var pills = document.querySelectorAll('.wave-pill');
+    if (!pills.length) return;
+
+    // Click → set mode, pause any pending auto-cycle.
+    Array.prototype.forEach.call(pills, function (p) {
+      p.addEventListener('click', function () {
+        setPivotMode(p.getAttribute('data-mode'));
+        pauseAutoCycle();
+      });
+    });
+
+    // State subscriber: keep aria-pressed honest.
+    pivotState.listeners.push(function (mode) {
+      Array.prototype.forEach.call(pills, function (p) {
+        p.setAttribute('aria-pressed', p.getAttribute('data-mode') === mode ? 'true' : 'false');
+      });
+    });
+
+    if (REDUCED) return;
+    var hoverless = window.matchMedia && window.matchMedia('(hover: none)').matches;
+    if (!hoverless) return;
+
+    var pauseUntil = 0;
+    function tick() {
+      var now = performance.now();
+      if (now < pauseUntil) {
+        setTimeout(tick, pauseUntil - now + 100);
+        return;
+      }
+      setPivotMode(pivotState.modes[(pivotState.i + 1) % pivotState.modes.length]);
+      setTimeout(tick, 4000);
+    }
+    function pauseAutoCycle() {
+      pauseUntil = performance.now() + 8000;
+    }
+
+    // Any tap or click anywhere on the page pauses the auto-cycle for 8 s.
+    document.addEventListener('touchstart', pauseAutoCycle, { passive: true, capture: true });
+    document.addEventListener('click',      pauseAutoCycle, { capture: true });
+
+    setTimeout(tick, 4000);
+  }
+
   /* ---------- boot ------------------------------------------ */
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', boot);
@@ -242,9 +392,12 @@
     boot();
   }
   function boot() {
-    try { startMesh();      } catch (e) { console.warn('factiv mesh failed', e); }
-    try { startScramble();  } catch (e) { console.warn('factiv scramble failed', e); }
-    try { startMagnetic();  } catch (e) { console.warn('factiv magnetic failed', e); }
-    try { startDigitFlip(); } catch (e) { console.warn('factiv digit-flip failed', e); }
+    try { startMesh();         } catch (e) { console.warn('factiv mesh failed', e); }
+    try { startScramble();     } catch (e) { console.warn('factiv scramble failed', e); }
+    try { startMagnetic();     } catch (e) { console.warn('factiv magnetic failed', e); }
+    try { startDigitFlip();    } catch (e) { console.warn('factiv digit-flip failed', e); }
+    try { startWaveform();     } catch (e) { console.warn('factiv waveform failed', e); }
+    try { startCyclingPivot();      } catch (e) { console.warn('factiv pivot failed', e); }
+    try { startPillsAndAutoCycle(); } catch (e) { console.warn('factiv pills failed', e); }
   }
 })();

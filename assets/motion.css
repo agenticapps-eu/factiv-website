@@ -60,11 +60,81 @@
   to  {color:var(--gold); -webkit-text-stroke:1px transparent}
 }
 
+/* Interactive 7-bar hero waveform — promotes the wavemark from watermark to instrument.
+   Bars are flex-equal; JS sets --scale per bar each frame. transform-only updates, no
+   layout per frame. Hit area covers .hero-wave-bars so the cursor doesn't have to land
+   precisely on a bar. Pills below act as a second affordance for the cycling claim. */
+.hero-wave{
+  position:absolute;
+  right:6vw;top:50%;
+  transform:translateY(-50%);
+  width:clamp(220px,28vw,380px);
+  display:flex;flex-direction:column;
+  gap:14px;
+}
+.hero-wave-bars{
+  display:flex;align-items:flex-end;
+  gap:clamp(6px,0.7vw,11px);
+  width:100%;
+  height:clamp(150px,17vw,230px);
+  cursor:crosshair;
+}
+.hero-wave-bar{
+  flex:1;
+  height:100%;
+  --scale:.4;
+  transform:scaleY(var(--scale));
+  transform-origin:bottom;
+  border-radius:8px 8px 3px 3px;
+  background:var(--bar);
+  will-change:transform;
+}
+.hero-wave-bar[data-i="0"]{--bar:#B89355}
+.hero-wave-bar[data-i="1"]{--bar:#C7AA79}
+.hero-wave-bar[data-i="2"]{--bar:#F2AF4C}
+.hero-wave-bar[data-i="3"]{--bar:#F07B49}
+.hero-wave-bar[data-i="4"]{--bar:#F2AF4C}
+.hero-wave-bar[data-i="5"]{--bar:#C7AA79}
+.hero-wave-bar[data-i="6"]{--bar:#B89355}
+
+.hero-wave-pills{display:flex;gap:6px;width:100%}
+.wave-pill{
+  flex:1;
+  font-family:'Open Sans',sans-serif;font-size:10px;font-weight:700;
+  letter-spacing:2px;text-transform:uppercase;
+  color:var(--muted);
+  background:rgba(240,237,232,0.04);
+  border:1px solid rgba(240,237,232,0.12);
+  border-radius:999px;
+  padding:9px 6px;
+  cursor:pointer;
+  -webkit-tap-highlight-color:transparent;
+  transition:background .2s,color .2s,border-color .2s;
+}
+.wave-pill:hover{background:rgba(242,175,76,0.10);color:var(--gold);border-color:rgba(242,175,76,0.32)}
+.wave-pill[aria-pressed="true"]{background:rgba(242,175,76,0.18);color:var(--gold);border-color:var(--gold)}
+.wave-pill:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+
+@media (max-width:768px){
+  .hero-wave{
+    position:static;
+    transform:none;
+    width:100%;max-width:320px;
+    margin:0 0 28px;
+    gap:12px;
+  }
+  .hero-wave-bars{height:96px;gap:6px}
+  .hero-wave-bar{border-radius:5px 5px 2px 2px}
+  /* WCAG SC 2.5.5: 44 px minimum tap target on touch */
+  .wave-pill{padding:14px 8px;font-size:11px;letter-spacing:1.6px}
+}
+
 /* Reduced-motion: collapse everything cleanly */
 @media (prefers-reduced-motion: reduce){
   #bg-gl{display:none}
   .hero-title{white-space:normal}
   .btn-primary,.btn-ghost{transition:background .2s,color .2s,border-color .2s}
+  .hero-wave-bars{cursor:auto}
   @supports (animation-timeline: view()) {
     section .section-title,
     section .section-label,
