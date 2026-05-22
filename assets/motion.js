@@ -335,6 +335,54 @@
     });
   }
 
+  /* ---------- 7. Wavemark pills + touch auto-cycle ---------- */
+  // Pills are a second control surface for the same pivotState. On touch devices
+  // (no hover), the mode auto-cycles every 4 s and pauses for 8 s after any user
+  // interaction.
+  function startPillsAndAutoCycle() {
+    var pills = document.querySelectorAll('.wave-pill');
+    if (!pills.length) return;
+
+    // Click → set mode, pause any pending auto-cycle.
+    Array.prototype.forEach.call(pills, function (p) {
+      p.addEventListener('click', function () {
+        setPivotMode(p.getAttribute('data-mode'));
+        pauseAutoCycle();
+      });
+    });
+
+    // State subscriber: keep aria-pressed honest.
+    pivotState.listeners.push(function (mode) {
+      Array.prototype.forEach.call(pills, function (p) {
+        p.setAttribute('aria-pressed', p.getAttribute('data-mode') === mode ? 'true' : 'false');
+      });
+    });
+
+    if (REDUCED) return;
+    var hoverless = window.matchMedia && window.matchMedia('(hover: none)').matches;
+    if (!hoverless) return;
+
+    var pauseUntil = 0;
+    function tick() {
+      var now = performance.now();
+      if (now < pauseUntil) {
+        setTimeout(tick, pauseUntil - now + 100);
+        return;
+      }
+      setPivotMode(pivotState.modes[(pivotState.i + 1) % pivotState.modes.length]);
+      setTimeout(tick, 4000);
+    }
+    function pauseAutoCycle() {
+      pauseUntil = performance.now() + 8000;
+    }
+
+    // Any tap or click anywhere on the page pauses the auto-cycle for 8 s.
+    document.addEventListener('touchstart', pauseAutoCycle, { passive: true, capture: true });
+    document.addEventListener('click',      pauseAutoCycle, { capture: true });
+
+    setTimeout(tick, 4000);
+  }
+
   /* ---------- boot ------------------------------------------ */
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', boot);
@@ -347,6 +395,7 @@
     try { startMagnetic();     } catch (e) { console.warn('factiv magnetic failed', e); }
     try { startDigitFlip();    } catch (e) { console.warn('factiv digit-flip failed', e); }
     try { startWaveform();     } catch (e) { console.warn('factiv waveform failed', e); }
-    try { startCyclingPivot(); } catch (e) { console.warn('factiv pivot failed', e); }
+    try { startCyclingPivot();      } catch (e) { console.warn('factiv pivot failed', e); }
+    try { startPillsAndAutoCycle(); } catch (e) { console.warn('factiv pills failed', e); }
   }
 })();
