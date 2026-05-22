@@ -306,11 +306,9 @@
   }
 
   /* ---------- 6. Cycling hero pivot (ships → runs → pays) --- */
-  // Single source of truth for the cycling claim. Commit 3 will let pills mutate
-  // the same state and add the bar-pulse on change.
+  // Single source of truth for the cycling claim. Per-locale labels live on each
+  // element as data-label-{mode} so EN and DE share this JS unchanged.
   var pivotState = { i: 0, modes: ['ships', 'runs', 'pays'], listeners: [] };
-  var CLAIM_LABEL = { ships: 'SHIPS', runs: 'RUNS', pays: 'PAYS' };
-  var SUB_LABEL   = { ships: 'actually ships', runs: 'runs in your stack', pays: 'gets paid for' };
 
   function setPivotMode(mode) {
     var idx = pivotState.modes.indexOf(mode);
@@ -319,15 +317,19 @@
     pivotState.listeners.forEach(function (fn) { fn(mode); });
   }
 
+  function labelFor(el, mode) {
+    return el.getAttribute('data-label-' + mode) || el.textContent;
+  }
+
   function startCyclingPivot() {
     var pivot = document.querySelector('.hero-pivot');
     var subPivot = document.querySelector('.hero-sub-pivot');
     if (!pivot) return;
 
     pivotState.listeners.push(function (mode) {
-      pivot.textContent = CLAIM_LABEL[mode];
+      pivot.textContent = labelFor(pivot, mode);
       pivot.setAttribute('data-mode', mode);
-      if (subPivot) subPivot.textContent = SUB_LABEL[mode];
+      if (subPivot) subPivot.textContent = labelFor(subPivot, mode);
     });
 
     pivot.addEventListener('click', function () {
