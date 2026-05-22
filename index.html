@@ -68,7 +68,14 @@ nav.scrolled{background:rgba(17,17,17,.96);backdrop-filter:blur(12px)}
 .hero-eyebrow{font-size:11px;letter-spacing:4px;text-transform:uppercase;color:var(--gold);margin-bottom:20px;opacity:0;transform:translateY(20px);animation:fadeUp .7s .3s forwards}
 .hero-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(80px,13vw,168px);line-height:.88;letter-spacing:3px;opacity:0;transform:translateY(40px);animation:fadeUp .9s .5s forwards}
 .t1,.t3{color:var(--white)}.t2{color:var(--gold)}
-.hero-sub{font-size:clamp(14px,1.6vw,19px);font-weight:300;color:var(--muted);max-width:560px;margin-top:32px;line-height:1.78;opacity:0;transform:translateY(20px);animation:fadeUp .8s .85s forwards}
+.hero-claim{font-family:'Bebas Neue',sans-serif;font-size:clamp(28px,3.6vw,52px);line-height:1.05;letter-spacing:2px;color:var(--white);margin-top:24px;opacity:0;transform:translateY(20px);animation:fadeUp .8s .75s forwards}
+.hero-pivot{display:inline-block;font:inherit;letter-spacing:inherit;background:transparent;border:0;padding:0 2px;margin:0;color:var(--gold);cursor:pointer;position:relative;-webkit-tap-highlight-color:transparent;transition:color .2s}
+.hero-pivot::after{content:'';position:absolute;left:2px;right:2px;bottom:.06em;height:2px;background:var(--gold);transform-origin:left;transform:scaleX(.4);transition:transform .25s ease,background .2s}
+.hero-pivot:hover{color:var(--gold-lt)}
+.hero-pivot:hover::after{transform:scaleX(1);background:var(--gold-lt)}
+.hero-pivot:focus-visible{outline:2px solid var(--gold);outline-offset:4px;border-radius:2px}
+.hero-sub-pivot{color:var(--gold)}
+.hero-sub{font-size:clamp(14px,1.6vw,19px);font-weight:300;color:var(--muted);max-width:560px;margin-top:28px;line-height:1.78;opacity:0;transform:translateY(20px);animation:fadeUp .8s .95s forwards}
 .hero-actions{display:flex;gap:16px;margin-top:48px;opacity:0;transform:translateY(20px);animation:fadeUp .8s 1.1s forwards}
 .btn-primary{background:var(--gold);color:var(--bg);padding:15px 40px;font-size:11px;letter-spacing:3px;text-transform:uppercase;font-weight:700;font-family:'Open Sans',sans-serif;text-decoration:none;transition:background .2s,transform .15s;display:inline-block}
 .btn-primary:hover{background:var(--gold-lt);transform:translateY(-2px)}
@@ -201,7 +208,8 @@ footer{border-top:1px solid var(--border);margin-top:100px;padding-top:40px;disp
   </div>
   <div class="hero-eyebrow">Germany · Est. 2026 · A studio of two</div>
   <h1 class="hero-title"><span class="t1">FACT</span><span class="t2">I</span><span class="t3">V</span></h1>
-  <p class="hero-sub">We build agentic software that ships — not slide-decks about it. A studio of two builders, with a track record across regulated SMB, institutional due-diligence, and consumer fintech.</p>
+  <p class="hero-claim">Agentic software that <button type="button" class="hero-pivot" data-mode="ships" aria-live="polite">SHIPS</button>.</p>
+  <p class="hero-sub">A studio of two builders that <span class="hero-sub-pivot" aria-live="polite">actually ships</span> — not slide-decks about it. With a track record across regulated SMB, institutional due-diligence, and consumer fintech.</p>
   <div class="hero-actions">
     <a href="#what" class="btn-primary">How we work</a>
     <a href="#contact" class="btn-ghost">Start a project</a>

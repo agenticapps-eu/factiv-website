@@ -305,6 +305,36 @@
     })();
   }
 
+  /* ---------- 6. Cycling hero pivot (ships → runs → pays) --- */
+  // Single source of truth for the cycling claim. Commit 3 will let pills mutate
+  // the same state and add the bar-pulse on change.
+  var pivotState = { i: 0, modes: ['ships', 'runs', 'pays'], listeners: [] };
+  var CLAIM_LABEL = { ships: 'SHIPS', runs: 'RUNS', pays: 'PAYS' };
+  var SUB_LABEL   = { ships: 'actually ships', runs: 'runs in your stack', pays: 'gets paid for' };
+
+  function setPivotMode(mode) {
+    var idx = pivotState.modes.indexOf(mode);
+    if (idx < 0) return;
+    pivotState.i = idx;
+    pivotState.listeners.forEach(function (fn) { fn(mode); });
+  }
+
+  function startCyclingPivot() {
+    var pivot = document.querySelector('.hero-pivot');
+    var subPivot = document.querySelector('.hero-sub-pivot');
+    if (!pivot) return;
+
+    pivotState.listeners.push(function (mode) {
+      pivot.textContent = CLAIM_LABEL[mode];
+      pivot.setAttribute('data-mode', mode);
+      if (subPivot) subPivot.textContent = SUB_LABEL[mode];
+    });
+
+    pivot.addEventListener('click', function () {
+      setPivotMode(pivotState.modes[(pivotState.i + 1) % pivotState.modes.length]);
+    });
+  }
+
   /* ---------- boot ------------------------------------------ */
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', boot);
@@ -312,10 +342,11 @@
     boot();
   }
   function boot() {
-    try { startMesh();      } catch (e) { console.warn('factiv mesh failed', e); }
-    try { startScramble();  } catch (e) { console.warn('factiv scramble failed', e); }
-    try { startMagnetic();  } catch (e) { console.warn('factiv magnetic failed', e); }
-    try { startDigitFlip(); } catch (e) { console.warn('factiv digit-flip failed', e); }
-    try { startWaveform();  } catch (e) { console.warn('factiv waveform failed', e); }
+    try { startMesh();         } catch (e) { console.warn('factiv mesh failed', e); }
+    try { startScramble();     } catch (e) { console.warn('factiv scramble failed', e); }
+    try { startMagnetic();     } catch (e) { console.warn('factiv magnetic failed', e); }
+    try { startDigitFlip();    } catch (e) { console.warn('factiv digit-flip failed', e); }
+    try { startWaveform();     } catch (e) { console.warn('factiv waveform failed', e); }
+    try { startCyclingPivot(); } catch (e) { console.warn('factiv pivot failed', e); }
   }
 })();
