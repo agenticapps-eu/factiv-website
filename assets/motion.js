@@ -235,6 +235,76 @@
     Array.prototype.forEach.call(labels, function (l) { obs.observe(l); });
   }
 
+  /* ---------- 5. Interactive 7-bar wavemark ----------------- */
+  function startWaveform() {
+    var host = document.querySelector('.hero-wave');
+    if (!host) return;
+    var bars = host.querySelectorAll('.hero-wave-bar');
+    if (bars.length !== 7) return;
+
+    // Rest envelope — symmetric, centre tallest. Echoes the 6-bar watermark glyph.
+    var rest  = [0.35, 0.75, 0.55, 1.00, 0.55, 0.75, 0.35];
+    // Phase offsets so idle drift breathes out of sync across bars.
+    var phase = [0.0,  0.7,  1.4,  2.1,  2.8,  3.5,  4.2];
+
+    function setScale(i, s) {
+      bars[i].style.setProperty('--scale', s.toFixed(3));
+    }
+
+    // Reduced motion: snap to rest, do nothing else.
+    if (REDUCED) {
+      for (var i = 0; i < bars.length; i++) setScale(i, rest[i]);
+      return;
+    }
+
+    var hover = null; // {x: 0..1} or null
+
+    function update(clientX) {
+      var r = host.getBoundingClientRect();
+      if (r.width <= 0) return;
+      hover = { x: Math.max(0, Math.min(1, (clientX - r.left) / r.width)) };
+    }
+
+    host.addEventListener('mousemove',  function (e) { update(e.clientX); },               { passive: true });
+    host.addEventListener('mouseleave', function ()  { hover = null; });
+    host.addEventListener('touchstart', function (e) { if (e.touches[0]) update(e.touches[0].clientX); }, { passive: true });
+    host.addEventListener('touchmove',  function (e) { if (e.touches[0]) update(e.touches[0].clientX); }, { passive: true });
+    host.addEventListener('touchend',   function ()  { hover = null; });
+
+    // Only burn frames while the wavemark is in view.
+    var active = true;
+    if ('IntersectionObserver' in window) {
+      var io = new IntersectionObserver(function (entries) {
+        active = entries[0].isIntersecting;
+      }, { threshold: 0.01 });
+      io.observe(host);
+    }
+
+    var t0 = performance.now();
+    (function frame() {
+      if (active) {
+        var t = (performance.now() - t0) / 1000;
+        for (var i = 0; i < bars.length; i++) {
+          var ti = i / (bars.length - 1);
+          // Idle drift: ±0.04 amplitude, ~6s period, per-bar phase offset.
+          var drift = Math.sin(t * (Math.PI * 2 / 6) + phase[i]) * 0.04;
+          var scale = rest[i] + drift;
+          if (hover) {
+            var d = Math.abs(ti - hover.x);
+            // 7 bars span a wider x-range each than V4's 24 bars, so use a gentler
+            // falloff (*4 instead of *6).
+            var peak = Math.max(0, 1 - d * 4);
+            scale = rest[i] + drift + peak * 0.5;
+          }
+          if (scale < 0.08) scale = 0.08;
+          if (scale > 1.05) scale = 1.05;
+          setScale(i, scale);
+        }
+      }
+      requestAnimationFrame(frame);
+    })();
+  }
+
   /* ---------- boot ------------------------------------------ */
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', boot);
@@ -246,5 +316,6 @@
     try { startScramble();  } catch (e) { console.warn('factiv scramble failed', e); }
     try { startMagnetic();  } catch (e) { console.warn('factiv magnetic failed', e); }
     try { startDigitFlip(); } catch (e) { console.warn('factiv digit-flip failed', e); }
+    try { startWaveform();  } catch (e) { console.warn('factiv waveform failed', e); }
   }
 })();

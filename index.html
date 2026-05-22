@@ -76,7 +76,6 @@ nav.scrolled{background:rgba(17,17,17,.96);backdrop-filter:blur(12px)}
 .btn-ghost:hover{border-color:var(--gold);color:var(--gold);transform:translateY(-2px)}
 .hero-scroll{position:absolute;bottom:44px;left:10vw;display:flex;align-items:center;gap:12px;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--muted);opacity:0;animation:fadeUp .8s 1.5s forwards}
 .scroll-line{width:40px;height:1px;background:var(--gold);animation:scrollPulse 2.2s ease-in-out infinite}
-.hero-wavemark{position:absolute;right:-4vw;top:50%;transform:translateY(-50%);width:clamp(280px,46vw,660px);opacity:.04;animation:floatY 9s ease-in-out infinite}
 .ticker{position:relative;z-index:1;background:linear-gradient(180deg,transparent 0%,var(--gold) 22%,var(--gold) 78%,transparent 100%);padding:32px 0;overflow:hidden;white-space:nowrap}
 .ticker-track{display:inline-block;animation:ticker 28s linear infinite}
 .ticker-track span{font-family:'Bebas Neue',sans-serif;font-size:17px;letter-spacing:4px;color:var(--bg);padding:0 28px}
@@ -138,12 +137,11 @@ footer{border-top:1px solid var(--border);margin-top:100px;padding-top:40px;disp
 .reveal-r.visible{opacity:1;transform:translateX(0)}
 @keyframes fadeUp{to{opacity:1;transform:translateY(0)}}
 @keyframes scrollPulse{0%,100%{width:22px}50%{width:44px}}
-@keyframes floatY{0%,100%{transform:translateY(-50%)}50%{transform:translateY(-53%)}}
 @keyframes ticker{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
 @media(max-width:768px){
   body{cursor:auto}#cur,#cur-ring{display:none}
   nav{padding:18px 24px}.nav-links{display:none}
-  #hero{padding:0 6vw}.hero-wavemark{display:none}
+  #hero{padding:0 6vw}
   .what-grid,.about-grid{grid-template-columns:1fr;gap:48px}
   .process-steps{grid-template-columns:1fr 1fr;gap:24px}
   .metrics-grid{grid-template-columns:1fr;gap:28px}
@@ -190,14 +188,17 @@ footer{border-top:1px solid var(--border);margin-top:100px;padding-top:40px;disp
 </nav>
 
 <section id="hero">
-  <svg class="hero-wavemark" viewBox="0 0 400 240" fill="none">
-    <rect x="0"   y="80"  width="50" height="80"  rx="25" fill="white"/>
-    <rect x="65"  y="40"  width="50" height="160" rx="25" fill="white"/>
-    <rect x="130" y="55"  width="50" height="130" rx="25" fill="white"/>
-    <rect x="195" y="10"  width="50" height="220" rx="25" fill="white"/>
-    <rect x="260" y="55"  width="50" height="130" rx="25" fill="white"/>
-    <rect x="325" y="40"  width="50" height="160" rx="25" fill="white"/>
-  </svg>
+  <div class="hero-wave" aria-hidden="true">
+    <div class="hero-wave-bars">
+      <div class="hero-wave-bar" data-i="0"></div>
+      <div class="hero-wave-bar" data-i="1"></div>
+      <div class="hero-wave-bar" data-i="2"></div>
+      <div class="hero-wave-bar" data-i="3"></div>
+      <div class="hero-wave-bar" data-i="4"></div>
+      <div class="hero-wave-bar" data-i="5"></div>
+      <div class="hero-wave-bar" data-i="6"></div>
+    </div>
+  </div>
   <div class="hero-eyebrow">Germany · Est. 2026 · A studio of two</div>
   <h1 class="hero-title"><span class="t1">FACT</span><span class="t2">I</span><span class="t3">V</span></h1>
   <p class="hero-sub">We build agentic software that ships — not slide-decks about it. A studio of two builders, with a track record across regulated SMB, institutional due-diligence, and consumer fintech.</p>
