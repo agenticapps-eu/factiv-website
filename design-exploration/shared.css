@@ -1,0 +1,36 @@
+/* Factiv variant exploration — shared base */
+@import url('../colors_and_type.css');
+
+:root {
+  /* aliases that match the current site naming, mapped to design-system tokens */
+  --f-bg:        #111111;
+  --f-bg-mid:    #1a1a1a;
+  --f-bg-light:  #242424;
+  --f-border:    #2a2a2a;
+  --f-gold:      var(--factiv-amber);
+  --f-gold-dk:   var(--factiv-bronze);
+  --f-gold-lt:   #c7aa79;
+  --f-coral:     var(--factiv-orange);
+  --f-ink:       var(--factiv-ink);
+  --f-white:     #f0ede8;
+  --f-muted:     rgba(240, 237, 232, 0.52);
+  --f-faint:     rgba(240, 237, 232, 0.06);
+
+  --f-font-display: 'Bebas Neue', 'Impact', sans-serif;
+  --f-font-body:    'Open Sans', system-ui, sans-serif;
+  --f-font-mono:    ui-monospace, 'SF Mono', 'JetBrains Mono', 'Menlo', monospace;
+}
+
+/* every variant artboard gets these scoped resets */
+.fv {
+  font-family: var(--f-font-body);
+  color: var(--f-white);
+  position: relative;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+.fv *, .fv *::before, .fv *::after { box-sizing: border-box; }
+.fv h1, .fv h2, .fv h3, .fv h4, .fv p, .fv ul { margin: 0; padding: 0; }
+.fv ul { list-style: none; }
+.fv a { color: inherit; text-decoration: none; }
+.fv button { font: inherit; cursor: pointer; border: 0; background: 0; color: inherit; }
