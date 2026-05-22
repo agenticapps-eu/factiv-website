@@ -119,12 +119,14 @@
   .hero-wave{
     position:static;
     transform:none;
-    width:100%;max-width:300px;
+    width:100%;max-width:320px;
     margin:0 0 28px;
-    gap:10px;
+    gap:12px;
   }
   .hero-wave-bars{height:96px;gap:6px}
   .hero-wave-bar{border-radius:5px 5px 2px 2px}
+  /* WCAG SC 2.5.5: 44 px minimum tap target on touch */
+  .wave-pill{padding:14px 8px;font-size:11px;letter-spacing:1.6px}
 }
 
 /* Reduced-motion: collapse everything cleanly */
