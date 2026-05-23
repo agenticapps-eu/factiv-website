@@ -235,74 +235,73 @@
     Array.prototype.forEach.call(labels, function (l) { obs.observe(l); });
   }
 
-  /* ---------- 5. Interactive 7-bar wavemark ----------------- */
+  /* ---------- 5. Interactive 24-bar wavemark (V4 port) ------ */
+  // Container is a #wavebars div. JS populates 24 children. Each bar gets
+  // style.height (not --scale + transform); CSS transition: height 180ms
+  // cubic-bezier(.34,1.56,.64,1) handles the spring. Hover peak with sharp
+  // (1 - d*6) falloff. Coloured box-shadow glow on bars within 8% of cursor.
   function startWaveform() {
-    var host = document.querySelector('.hero-wave');
+    var host = document.getElementById('wavebars');
     if (!host) return;
-    var bars = host.querySelectorAll('.hero-wave-bar');
-    if (bars.length !== 7) return;
-
-    // Rest envelope — symmetric, centre tallest. Echoes the 6-bar watermark glyph.
-    var rest  = [0.35, 0.75, 0.55, 1.00, 0.55, 0.75, 0.35];
-    // Phase offsets so idle drift breathes out of sync across bars.
-    var phase = [0.0,  0.7,  1.4,  2.1,  2.8,  3.5,  4.2];
-
-    function setScale(i, s) {
-      bars[i].style.setProperty('--scale', s.toFixed(3));
+    var N = 24;
+    // Sin-pi base envelope with harmonic — same as V4-Interactive.jsx.
+    var base = [];
+    for (var i = 0; i < N; i++) {
+      var t = i / (N - 1);
+      var v = Math.sin(t * Math.PI) * 0.7 + 0.3 + Math.sin(t * Math.PI * 4) * 0.08;
+      base.push(Math.max(0.15, Math.min(1, v)));
     }
-
-    // Reduced motion: snap to rest, do nothing else.
-    if (REDUCED) {
-      for (var i = 0; i < bars.length; i++) setScale(i, rest[i]);
-      return;
+    // Brand gradient across the 5 wavemark colours, spread across 24 bars.
+    function hueFor(i) {
+      if (i < N * 0.2)  return '#B89355';
+      if (i < N * 0.4)  return '#C7AA79';
+      if (i < N * 0.6)  return '#F2AF4C';
+      if (i < N * 0.8)  return '#F07B49';
+      return '#F2AF4C';
     }
+    var els = [];
+    for (var k = 0; k < N; k++) {
+      var d = document.createElement('div');
+      d.className = 'hero-wave-bar';
+      d.dataset.hue = hueFor(k);
+      d.style.background = d.dataset.hue;
+      d.style.height = (base[k] * 100) + '%';
+      host.appendChild(d);
+      els.push(d);
+    }
+    if (REDUCED) return; // bars rest at base envelope, no interaction
 
-    var hover = null; // {x: 0..1} or null
-
-    function update(clientX) {
+    var hover = null;
+    function paint() {
+      for (var i = 0; i < N; i++) {
+        var ti = i / (N - 1);
+        var scale = base[i];
+        var glow = false;
+        if (hover) {
+          var dx = Math.abs(ti - hover.x);
+          var peak = Math.max(0, 1 - dx * 6);
+          scale = base[i] * 0.5 + peak * hover.y * 1.1;
+          glow = dx < 0.08;
+        }
+        scale = Math.max(0.06, Math.min(1, scale));
+        els[i].style.height = (scale * 100) + '%';
+        els[i].style.boxShadow = glow ? '0 0 24px ' + els[i].dataset.hue : 'none';
+      }
+    }
+    function setHover(clientX, clientY) {
       var r = host.getBoundingClientRect();
       if (r.width <= 0) return;
-      hover = { x: Math.max(0, Math.min(1, (clientX - r.left) / r.width)) };
+      hover = {
+        x: Math.max(0, Math.min(1, (clientX - r.left) / r.width)),
+        y: Math.max(0, Math.min(1, 1 - (clientY - r.top) / r.height))
+      };
+      paint();
     }
-
-    host.addEventListener('mousemove',  function (e) { update(e.clientX); },               { passive: true });
-    host.addEventListener('mouseleave', function ()  { hover = null; });
-    host.addEventListener('touchstart', function (e) { if (e.touches[0]) update(e.touches[0].clientX); }, { passive: true });
-    host.addEventListener('touchmove',  function (e) { if (e.touches[0]) update(e.touches[0].clientX); }, { passive: true });
-    host.addEventListener('touchend',   function ()  { hover = null; });
-
-    // Only burn frames while the wavemark is in view.
-    var active = true;
-    if ('IntersectionObserver' in window) {
-      var io = new IntersectionObserver(function (entries) {
-        active = entries[0].isIntersecting;
-      }, { threshold: 0.01 });
-      io.observe(host);
-    }
-
-    var t0 = performance.now();
-    (function frame() {
-      if (active) {
-        var t = (performance.now() - t0) / 1000;
-        for (var i = 0; i < bars.length; i++) {
-          var ti = i / (bars.length - 1);
-          // Idle drift: ±0.04 amplitude, ~6s period, per-bar phase offset.
-          var drift = Math.sin(t * (Math.PI * 2 / 6) + phase[i]) * 0.04;
-          var scale = rest[i] + drift;
-          if (hover) {
-            var d = Math.abs(ti - hover.x);
-            // 7 bars span a wider x-range each than V4's 24 bars, so use a gentler
-            // falloff (*4 instead of *6).
-            var peak = Math.max(0, 1 - d * 4);
-            scale = rest[i] + drift + peak * 0.5;
-          }
-          if (scale < 0.08) scale = 0.08;
-          if (scale > 1.05) scale = 1.05;
-          setScale(i, scale);
-        }
-      }
-      requestAnimationFrame(frame);
-    })();
+    host.addEventListener('mousemove',  function (e) { setHover(e.clientX, e.clientY); }, { passive: true });
+    host.addEventListener('mouseleave', function ()  { hover = null; paint(); });
+    host.addEventListener('touchstart', function (e) { if (e.touches[0]) setHover(e.touches[0].clientX, e.touches[0].clientY); }, { passive: true });
+    host.addEventListener('touchmove',  function (e) { if (e.touches[0]) setHover(e.touches[0].clientX, e.touches[0].clientY); }, { passive: true });
+    host.addEventListener('touchend',   function ()  { hover = null; paint(); });
   }
 
   /* ---------- 6. Cycling hero pivot (ships → runs → pays) --- */
