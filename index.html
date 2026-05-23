@@ -127,7 +127,11 @@ section{position:relative;z-index:1}
 .chip:hover .blob{opacity:1}
 #manifesto{padding:140px 10vw;background:var(--bg);overflow:hidden}
 .manifesto-text{font-family:'Bebas Neue',sans-serif;font-size:clamp(36px,5.8vw,82px);line-height:1.08;letter-spacing:1px;color:var(--white);max-width:1100px}
-.manifesto-text .outline{color:transparent;-webkit-text-stroke:1px var(--gold)}
+/* V4 hover-fill: outline-only at rest, fills gold on hover with a ↩ glyph */
+.manifesto-text .swap{display:inline-block;position:relative;cursor:pointer;color:transparent;-webkit-text-stroke:1.5px var(--gold);transition:-webkit-text-stroke .2s,color .3s}
+.manifesto-text .swap:hover{color:var(--gold);-webkit-text-stroke:1.5px transparent}
+.manifesto-text .swap::after{content:'↩';position:absolute;top:-10px;right:-30px;font-family:ui-monospace,'SF Mono',Menlo,monospace;font-size:18px;color:var(--gold);opacity:0;transition:opacity .2s,transform .2s}
+.manifesto-text .swap:hover::after{opacity:1;transform:translateY(-4px)}
 .manifesto-sub{font-size:15px;font-weight:300;color:var(--muted);max-width:520px;line-height:1.85;margin-top:44px}
 #metrics{position:relative;z-index:1}
 .metrics-inner{background:linear-gradient(135deg,var(--gold-dark) 0%,var(--gold) 55%,var(--coral) 100%);padding:84px 10vw}
@@ -280,8 +284,8 @@ footer{border-top:1px solid var(--border);margin-top:100px;padding-top:40px;disp
 
 <section id="manifesto">
   <div class="reveal">
-    <span class="section-label">02 — Our belief</span>
-    <p class="manifesto-text">Most AI projects<br>produce <span class="outline">demos.</span><br>We produce<br>software.</p>
+    <span class="section-label">02 — Our belief · hover to commit</span>
+    <p class="manifesto-text">Most AI projects<br>produce <span class="swap">demos.</span><br>We produce<br><span class="swap">software.</span></p>
     <p class="manifesto-sub">The agentic revolution is real. The engineering reality has barely caught up with it. We've spent the last few years building the systems most teams are still pitching — production-grade, auditable, monitored, paid-for. That's what we bring.</p>
   </div>
 </section>

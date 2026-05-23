@@ -38,13 +38,6 @@
     animation-timeline: view();
     animation-range: entry 0% cover 25%;
   }
-  /* Manifesto: outline -> solid gold fill */
-  #manifesto{view-timeline-name: --manifesto; view-timeline-axis: block}
-  .manifesto-text .outline{
-    animation: factiv-outline-fill linear both;
-    animation-timeline: --manifesto;
-    animation-range: entry 25% cover 65%;
-  }
 }
 
 @keyframes factiv-title-rise{
@@ -55,11 +48,6 @@
   from{transform:translateX(-12px);opacity:0}
   to  {transform:translateX(0);    opacity:1}
 }
-@keyframes factiv-outline-fill{
-  from{color:transparent;-webkit-text-stroke:1px var(--gold)}
-  to  {color:var(--gold); -webkit-text-stroke:1px transparent}
-}
-
 /* V4 24-bar hero waveform — JS populates 24 children, sets style.height per bar.
    Bars hang from bottom (align-items:flex-end), height transitions provide the
    spring. Container fills the wave-card vertically via flex:1. Hover gives a
@@ -92,7 +80,6 @@
   .hero-wave-bar{transition:none}
   @supports (animation-timeline: view()) {
     section .section-title,
-    section .section-label,
-    .manifesto-text .outline{animation:none}
+    section .section-label{animation:none}
   }
 }
