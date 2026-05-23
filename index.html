@@ -104,9 +104,6 @@ nav.scrolled{background:rgba(17,17,17,.96);backdrop-filter:blur(12px)}
 .wave-pill[aria-pressed="true"]{background:var(--gold);color:var(--bg);border-color:var(--gold);box-shadow:0 8px 24px -6px rgba(242,175,76,.4)}
 .wave-pill[aria-pressed="true"]:hover{transform:translateY(-2px);color:var(--bg)}
 .wave-pill:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
-.ticker{position:relative;z-index:1;background:linear-gradient(180deg,transparent 0%,var(--gold) 22%,var(--gold) 78%,transparent 100%);padding:32px 0;overflow:hidden;white-space:nowrap}
-.ticker-track{display:inline-block;animation:ticker 28s linear infinite}
-.ticker-track span{font-family:'Bebas Neue',sans-serif;font-size:17px;letter-spacing:4px;color:var(--bg);padding:0 28px}
 section{position:relative;z-index:1}
 .section-label{font-size:10px;letter-spacing:4px;text-transform:uppercase;color:var(--gold);margin-bottom:14px;display:block}
 .section-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(40px,5.5vw,76px);line-height:1;letter-spacing:1px;color:var(--white)}
@@ -168,7 +165,6 @@ footer{border-top:1px solid var(--border);margin-top:100px;padding-top:40px;disp
 .reveal-r.visible{opacity:1;transform:translateX(0)}
 @keyframes fadeUp{to{opacity:1;transform:translateY(0)}}
 @keyframes scrollPulse{0%,100%{width:22px}50%{width:44px}}
-@keyframes ticker{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
 @media(max-width:768px){
   body{cursor:auto}#cur,#cur-ring{display:none}
   nav{padding:18px 24px}.nav-links{display:none}.status-pill{display:none}
@@ -254,13 +250,6 @@ footer{border-top:1px solid var(--border);margin-top:100px;padding-top:40px;disp
     </div>
   </div>
 </section>
-
-<div class="ticker" aria-hidden="true">
-  <div class="ticker-track">
-    <span>Agentic Apps</span><span>·</span><span>AI Automation</span><span>·</span><span>Process Intelligence</span><span>·</span><span>EU Data Plane</span><span>·</span><span>A Studio of Two</span><span>·</span><span>Germany</span><span>·</span>
-    <span>Agentic Apps</span><span>·</span><span>AI Automation</span><span>·</span><span>Process Intelligence</span><span>·</span><span>EU Data Plane</span><span>·</span><span>A Studio of Two</span><span>·</span><span>Germany</span><span>·</span>
-  </div>
-</div>
 
 <section id="what">
   <div class="reveal"><span class="section-label">01 — What we build · poke any</span><h2 class="section-title">Four shapes,<br>all <span style="color:var(--gold)">shipping.</span></h2></div>
