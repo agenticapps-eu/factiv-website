@@ -133,12 +133,6 @@ section{position:relative;z-index:1}
 .manifesto-text .swap::after{content:'↩';position:absolute;top:-10px;right:-30px;font-family:ui-monospace,'SF Mono',Menlo,monospace;font-size:18px;color:var(--gold);opacity:0;transition:opacity .2s,transform .2s}
 .manifesto-text .swap:hover::after{opacity:1;transform:translateY(-4px)}
 .manifesto-sub{font-size:15px;font-weight:300;color:var(--muted);max-width:520px;line-height:1.85;margin-top:44px}
-#metrics{position:relative;z-index:1}
-.metrics-inner{background:linear-gradient(135deg,var(--gold-dark) 0%,var(--gold) 55%,var(--coral) 100%);padding:84px 10vw}
-.metrics-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:40px}
-.metric{text-align:center}
-.metric-num{font-family:'Bebas Neue',sans-serif;font-size:clamp(54px,8vw,96px);letter-spacing:2px;color:var(--bg);display:block;line-height:1}
-.metric-label{font-size:11px;letter-spacing:3px;text-transform:uppercase;color:rgba(17,17,17,.6);margin-top:8px;display:block}
 #process{padding:120px 10vw;background:var(--bg-mid)}
 .process-steps{display:grid;grid-template-columns:repeat(4,1fr);gap:36px;margin-top:72px}
 .step{padding-top:40px;border-top:2px solid var(--border);position:relative;transition:border-color .3s}
@@ -181,7 +175,6 @@ footer{border-top:1px solid var(--border);margin-top:100px;padding-top:40px;disp
   #hero{padding:0 6vw}
   .chips,.about-grid{grid-template-columns:1fr;gap:24px}
   .process-steps{grid-template-columns:1fr 1fr;gap:24px}
-  .metrics-grid{grid-template-columns:1fr;gap:28px}
   footer{flex-direction:column;gap:20px;text-align:center}
 }
 @media (prefers-reduced-motion: reduce){
@@ -287,16 +280,6 @@ footer{border-top:1px solid var(--border);margin-top:100px;padding-top:40px;disp
     <span class="section-label">02 — Our belief · hover to commit</span>
     <p class="manifesto-text">Most AI projects<br>produce <span class="swap">demos.</span><br>We produce<br><span class="swap">software.</span></p>
     <p class="manifesto-sub">The agentic revolution is real. The engineering reality has barely caught up with it. We've spent the last few years building the systems most teams are still pitching — production-grade, auditable, monitored, paid-for. That's what we bring.</p>
-  </div>
-</section>
-
-<section id="metrics">
-  <div class="metrics-inner">
-    <div class="metrics-grid">
-      <div class="metric reveal"><span class="metric-num" data-target="2">0</span><span class="metric-label">Founders. No agencies, no juniors.</span></div>
-      <div class="metric reveal"><span class="metric-num" data-target="3">0</span><span class="metric-label">Verticals shipped into so far</span></div>
-      <div class="metric reveal"><span class="metric-num metric-static">24 / 7</span><span class="metric-label">Production agentic systems online</span></div>
-    </div>
   </div>
 </section>
 
@@ -411,18 +394,6 @@ if(!RM)(function frame(){
 const obs=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible')}),{threshold:.12});
 document.querySelectorAll('.reveal,.reveal-l,.reveal-r').forEach(el=>obs.observe(el));
 
-// Counters
-const cobs=new IntersectionObserver(es=>{
-  es.forEach(e=>{
-    if(!e.isIntersecting)return;
-    const el=e.target,target=+el.dataset.target;
-    if(RM){el.textContent=target;cobs.unobserve(el);return}
-    let n=0;const step=target/55;
-    const t=setInterval(()=>{n=Math.min(n+step,target);el.textContent=Math.round(n);if(n>=target)clearInterval(t)},18);
-    cobs.unobserve(el);
-  });
-},{threshold:.4});
-document.querySelectorAll('[data-target]').forEach(el=>cobs.observe(el));
 </script>
 <script src="assets/motion.js" defer></script>
 </body>
