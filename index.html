@@ -40,14 +40,22 @@
 </script>
 <style>
 :root{
-  --bg:#111111;--bg-mid:#1A1A1A;--bg-light:#242424;--border:#2A2A2A;
+  --bg:#0F0D0A;--bg-mid:#0F0D0A;--bg-light:#1A1715;--border:rgba(244,237,224,0.12);
   --gold:#F2AF4C;--gold-dark:#B89355;--coral:#F07B49;--gold-lt:#C7AA79;
-  --white:#F0EDE8;--muted:rgba(240,237,232,0.52);--faint:rgba(240,237,232,0.06);
+  --white:#F4EDE0;--muted:rgba(244,237,224,0.65);--faint:rgba(244,237,224,0.04);
   --accent-live:#8FB15A;
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
-body{background:var(--bg);color:var(--white);font-family:'Open Sans',sans-serif;overflow-x:hidden}
+body{background:var(--bg);color:var(--white);font-family:'Open Sans',sans-serif;overflow-x:hidden;position:relative}
+/* V4 dot-grid texture across the whole page */
+body::before{content:'';position:fixed;inset:0;pointer-events:none;opacity:.45;z-index:0;background-image:radial-gradient(rgba(244,237,224,0.08) 1px,transparent 1px);background-size:24px 24px}
+/* Section-anchored radial glows. Apply one or more variants via .glow.<variant> */
+.glow{position:absolute;inset:0;pointer-events:none;z-index:0}
+.glow::before,.glow::after{content:'';position:absolute;border-radius:50%;filter:blur(40px)}
+.glow.gold-tr::before{top:-20%;right:-10%;width:60vw;height:60vw;background:radial-gradient(circle,rgba(242,175,76,0.10),transparent 60%)}
+.glow.coral-bl::after{bottom:-25%;left:-15%;width:55vw;height:55vw;background:radial-gradient(circle,rgba(240,123,73,0.08),transparent 60%)}
+.glow.bronze-c::before{top:30%;left:30%;width:50vw;height:50vw;background:radial-gradient(circle,rgba(184,147,85,0.10),transparent 60%)}
 nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;justify-content:space-between;align-items:center;padding:22px 56px;transition:background .3s}
 nav.scrolled{background:rgba(17,17,17,.96);backdrop-filter:blur(12px)}
 .nav-logo{font-family:'Bebas Neue',sans-serif;font-size:24px;letter-spacing:5px;color:var(--gold);text-decoration:none;display:flex;align-items:center;gap:10px}
@@ -102,9 +110,10 @@ nav.scrolled{background:rgba(17,17,17,.96);backdrop-filter:blur(12px)}
 .wave-pill[aria-pressed="true"]:hover{transform:translateY(-2px);color:var(--bg)}
 .wave-pill:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
 section{position:relative;z-index:1}
+section > *:not(.glow){position:relative;z-index:1}
 .section-label{font-size:10px;letter-spacing:4px;text-transform:uppercase;color:var(--gold);margin-bottom:14px;display:block}
 .section-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(40px,5.5vw,76px);line-height:1;letter-spacing:1px;color:var(--white)}
-#what{padding:120px 10vw;background:var(--bg-mid)}
+#what{padding:120px 10vw}
 .what-head{display:flex;align-items:end;justify-content:space-between;gap:48px;margin:48px 0 56px;flex-wrap:wrap}
 .what-intro{font-size:15px;font-weight:300;color:var(--muted);line-height:1.85;max-width:480px}
 .what-intro strong{color:var(--white);font-weight:600}
@@ -119,7 +128,7 @@ section{position:relative;z-index:1}
 .chip p{font-size:13px;line-height:1.7;color:var(--muted)}
 .chip .blob{position:absolute;right:-40px;top:-40px;width:120px;height:120px;border-radius:50%;background:radial-gradient(circle,rgba(242,175,76,0.18),transparent 70%);pointer-events:none;opacity:0;transition:opacity .3s}
 .chip:hover .blob{opacity:1}
-#manifesto{padding:140px 10vw;background:var(--bg);overflow:hidden}
+#manifesto{padding:140px 10vw;overflow:hidden}
 .manifesto-text{font-family:'Bebas Neue',sans-serif;font-size:clamp(36px,5.8vw,82px);line-height:1.08;letter-spacing:1px;color:var(--white);max-width:1100px}
 /* V4 hover-fill: outline-only at rest, fills gold on hover with a ↩ glyph */
 .manifesto-text .swap{display:inline-block;position:relative;cursor:pointer;color:transparent;-webkit-text-stroke:1.5px var(--gold);transition:-webkit-text-stroke .2s,color .3s}
@@ -127,14 +136,14 @@ section{position:relative;z-index:1}
 .manifesto-text .swap::after{content:'↩';position:absolute;top:-10px;right:-30px;font-family:ui-monospace,'SF Mono',Menlo,monospace;font-size:18px;color:var(--gold);opacity:0;transition:opacity .2s,transform .2s}
 .manifesto-text .swap:hover::after{opacity:1;transform:translateY(-4px)}
 .manifesto-sub{font-size:15px;font-weight:300;color:var(--muted);max-width:520px;line-height:1.85;margin-top:44px}
-#process{padding:120px 10vw;background:var(--bg-mid)}
+#process{padding:120px 10vw}
 .process-steps{display:grid;grid-template-columns:repeat(4,1fr);gap:36px;margin-top:72px}
 .step{padding-top:40px;border-top:2px solid var(--border);position:relative;transition:border-color .3s}
 .step:hover{border-color:var(--gold)}
-.step-num{position:absolute;top:-14px;font-family:'Bebas Neue',sans-serif;font-size:12px;letter-spacing:2px;color:var(--gold);background:var(--bg-mid);padding-right:10px}
+.step-num{position:absolute;top:-14px;font-family:'Bebas Neue',sans-serif;font-size:12px;letter-spacing:2px;color:var(--gold);background:var(--bg);padding-right:10px}
 .step h3{font-family:'Bebas Neue',sans-serif;font-size:21px;letter-spacing:1px;color:var(--white);margin-bottom:12px}
 .step p{font-size:13px;color:var(--muted);line-height:1.7}
-#about{padding:120px 10vw;background:var(--bg)}
+#about{padding:120px 10vw}
 .about-grid{display:grid;grid-template-columns:1fr 1fr;gap:88px;align-items:start;margin-top:72px}
 .about-text p{font-size:15px;font-weight:300;color:var(--muted);line-height:1.9;margin-bottom:20px}
 .about-text strong{color:var(--white);font-weight:600}
@@ -143,7 +152,7 @@ section{position:relative;z-index:1}
 .about-card:hover{border-color:var(--gold);transform:translateX(8px)}
 .about-card h4{font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:1px;color:var(--gold);margin-bottom:8px}
 .about-card p{font-size:13px;color:var(--muted);line-height:1.7}
-#contact{padding:120px 10vw 80px;background:var(--bg-mid);text-align:center}
+#contact{padding:120px 10vw 80px;text-align:center}
 .contact-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(52px,9vw,120px);line-height:.88;letter-spacing:2px;color:var(--white);margin-bottom:36px}
 .contact-title .gold{color:var(--gold)}
 .contact-sub{font-size:16px;font-weight:300;color:var(--muted);max-width:560px;margin:0 auto 52px;line-height:1.75}
@@ -205,6 +214,7 @@ footer{border-top:1px solid var(--border);margin-top:100px;padding-top:40px;disp
 </nav>
 
 <section id="hero">
+  <div class="glow gold-tr coral-bl"></div>
   <div class="hero-grid">
     <div class="hero-left">
       <div class="hero-hint">Hover the wavemark. Click a word. Try it.</div>
@@ -242,6 +252,7 @@ footer{border-top:1px solid var(--border);margin-top:100px;padding-top:40px;disp
 </section>
 
 <section id="what">
+  <div class="glow gold-tr"></div>
   <div class="reveal"><span class="section-label">01 — What we build · poke any</span><h2 class="section-title">Four shapes,<br>all <span style="color:var(--gold)">shipping.</span></h2></div>
   <div class="what-head reveal-l">
     <p class="what-intro">Each chip is a service in production right now. Hover them. Each represents weeks-to-months of real engineering — <strong>DSGVO-</strong> and <strong>EU-AI-Act-aware</strong> by default. We work with teams in <strong>regulated SMB, institutional due-diligence, and consumer fintech</strong>.</p>
@@ -255,6 +266,7 @@ footer{border-top:1px solid var(--border);margin-top:100px;padding-top:40px;disp
 </section>
 
 <section id="manifesto">
+  <div class="glow coral-bl"></div>
   <div class="reveal">
     <span class="section-label">02 — Our belief · hover to commit</span>
     <p class="manifesto-text">Most AI projects<br>produce <span class="swap">demos.</span><br>We produce<br><span class="swap">software.</span></p>
@@ -263,6 +275,7 @@ footer{border-top:1px solid var(--border);margin-top:100px;padding-top:40px;disp
 </section>
 
 <section id="process">
+  <div class="glow bronze-c"></div>
   <div class="reveal"><span class="section-label">03 — Process</span><h2 class="section-title">Focused.<br>Fast. Honest.</h2></div>
   <div class="process-steps">
     <div class="step reveal"><span class="step-num">01</span><h3>Discovery</h3><p>We map your current workflow, identify where automation creates the most value, and define a clear, scoped brief before any code is written.</p></div>
@@ -290,6 +303,7 @@ footer{border-top:1px solid var(--border);margin-top:100px;padding-top:40px;disp
 </section>
 
 <section id="contact">
+  <div class="glow gold-tr"></div>
   <span class="section-label reveal">05 — Contact</span>
   <h2 class="contact-title reveal">LET'S BUILD<br>SOMETHING<br><span class="gold">REAL.</span></h2>
   <p class="contact-sub reveal">Have an agentic problem you've been postponing? An AI initiative that needs the engineering side to catch up with the slide deck? Mail us. We'll tell you in one call whether we're the right shop. If we're not, we'll point you at who is.</p>
