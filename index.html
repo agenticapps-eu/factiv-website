@@ -62,8 +62,8 @@ nav.scrolled{background:rgba(17,17,17,.96);backdrop-filter:blur(12px)}
 .nav-links{display:flex;gap:36px;list-style:none}
 .nav-links a{color:var(--muted);font-size:11px;letter-spacing:2.5px;text-transform:uppercase;text-decoration:none;transition:color .2s}
 .nav-links a:hover{color:var(--gold)}
-.nav-cta{background:transparent;border:1px solid var(--gold);color:var(--gold);padding:10px 24px;font-size:11px;letter-spacing:2px;text-transform:uppercase;font-family:'Open Sans',sans-serif;text-decoration:none;transition:background .2s,color .2s}
-.nav-cta:hover{background:var(--gold);color:var(--bg)}
+.nav-cta{background:var(--gold);border:1px solid var(--gold);color:var(--bg);padding:10px 24px;font-size:11px;letter-spacing:2px;text-transform:uppercase;font-family:'Open Sans',sans-serif;font-weight:700;text-decoration:none;border-radius:999px;transition:transform 150ms}
+.nav-cta:hover{transform:translateY(-1px)}
 .nav-right{display:flex;align-items:center;gap:24px}
 .status-pill{display:inline-flex;align-items:center;gap:8px;padding:7px 13px;border:1px solid rgba(240,237,232,0.18);border-radius:999px;font-family:'Open Sans',sans-serif;font-size:10px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--muted);white-space:nowrap}
 .status-dot{width:7px;height:7px;border-radius:50%;background:var(--accent-live);box-shadow:0 0 0 0 rgba(143,177,90,0.55);animation:statusPulse 2.4s ease-in-out infinite}
@@ -138,18 +138,18 @@ section > *:not(.glow){position:relative;z-index:1}
 .manifesto-sub{font-size:15px;font-weight:300;color:var(--muted);max-width:520px;line-height:1.85;margin-top:44px}
 #process{padding:120px 10vw}
 .process-steps{display:grid;grid-template-columns:repeat(4,1fr);gap:36px;margin-top:72px}
-.step{padding-top:40px;border-top:2px solid var(--border);position:relative;transition:border-color .3s}
-.step:hover{border-color:var(--gold)}
-.step-num{position:absolute;top:-14px;font-family:'Bebas Neue',sans-serif;font-size:12px;letter-spacing:2px;color:var(--gold);background:var(--bg);padding-right:10px}
-.step h3{font-family:'Bebas Neue',sans-serif;font-size:21px;letter-spacing:1px;color:var(--white);margin-bottom:12px}
+.step{padding:28px 30px;background:rgba(244,237,224,0.03);border:1px solid var(--border);border-radius:22px;position:relative;transition:transform .25s cubic-bezier(.34,1.56,.64,1),background .2s,border-color .2s}
+.step:hover{transform:translateY(-4px);background:rgba(242,175,76,0.05);border-color:rgba(242,175,76,0.4)}
+.step-num{font-family:ui-monospace,'SF Mono','JetBrains Mono',Menlo,monospace;font-size:11px;letter-spacing:2px;color:var(--gold);display:block;margin-bottom:14px}
+.step h3{font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:1.5px;color:var(--white);text-transform:uppercase;margin-bottom:12px}
 .step p{font-size:13px;color:var(--muted);line-height:1.7}
 #about{padding:120px 10vw}
 .about-grid{display:grid;grid-template-columns:1fr 1fr;gap:88px;align-items:start;margin-top:72px}
 .about-text p{font-size:15px;font-weight:300;color:var(--muted);line-height:1.9;margin-bottom:20px}
 .about-text strong{color:var(--white);font-weight:600}
 .about-cards{display:flex;flex-direction:column;gap:20px}
-.about-card{padding:24px 28px;border:1px solid var(--border);transition:border-color .2s,transform .2s}
-.about-card:hover{border-color:var(--gold);transform:translateX(8px)}
+.about-card{padding:26px 30px;background:rgba(244,237,224,0.03);border:1px solid var(--border);border-radius:22px;transition:transform .25s cubic-bezier(.34,1.56,.64,1),background .2s,border-color .2s}
+.about-card:hover{transform:translateY(-4px);background:rgba(242,175,76,0.05);border-color:rgba(242,175,76,0.4)}
 .about-card h4{font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:1px;color:var(--gold);margin-bottom:8px}
 .about-card p{font-size:13px;color:var(--muted);line-height:1.7}
 #contact{padding:120px 10vw 80px;text-align:center}
@@ -278,10 +278,10 @@ footer{border-top:1px solid var(--border);margin-top:100px;padding-top:40px;disp
   <div class="glow bronze-c"></div>
   <div class="reveal"><span class="section-label">03 — Process</span><h2 class="section-title">Focused.<br>Fast. Honest.</h2></div>
   <div class="process-steps">
-    <div class="step reveal"><span class="step-num">01</span><h3>Discovery</h3><p>We map your current workflow, identify where automation creates the most value, and define a clear, scoped brief before any code is written.</p></div>
-    <div class="step reveal"><span class="step-num">02</span><h3>Architecture</h3><p>We design the agent system — models, tools, memory, data flows, and integration points — with your infrastructure and compliance requirements in mind.</p></div>
-    <div class="step reveal"><span class="step-num">03</span><h3>Build & Test</h3><p>Iterative development with continuous testing against real data. We ship working software in stages, not presentations at the end of a six-month project.</p></div>
-    <div class="step reveal"><span class="step-num">04</span><h3>Deploy & Handover</h3><p>Production deployment, documentation, team training, and an optional support retainer. You own the system. We make sure you can run it.</p></div>
+    <div class="step reveal"><span class="step-num">01 / Discovery</span><h3>Map &amp; scope</h3><p>We map your current workflow, identify where automation creates the most value, and define a clear, scoped brief before any code is written.</p></div>
+    <div class="step reveal"><span class="step-num">02 / Architecture</span><h3>Design</h3><p>We design the agent system — models, tools, memory, data flows, integration points — with your infrastructure and compliance in mind.</p></div>
+    <div class="step reveal"><span class="step-num">03 / Build</span><h3>Iterate &amp; test</h3><p>Iterative development with continuous testing against real data. We ship working software in stages, not presentations at the end.</p></div>
+    <div class="step reveal"><span class="step-num">04 / Handover</span><h3>Ship &amp; own</h3><p>Production deployment, documentation, team training, optional support retainer. You own the system. We make sure you can run it.</p></div>
   </div>
 </section>
 
