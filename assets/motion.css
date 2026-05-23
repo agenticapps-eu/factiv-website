@@ -4,22 +4,6 @@
    / manifesto outline-fill. All gated behind prefers-reduced-motion.
    ============================================================ */
 
-/* WebGL canvas sits behind the existing #bg-canvas */
-#bg-gl{position:fixed;inset:0;z-index:0;opacity:.55;pointer-events:none}
-#bg-canvas{z-index:1;opacity:.35}
-
-/* Hero title — scramble effect needs no-wrap and stable width */
-.hero-title{white-space:nowrap}
-.hero-title.scrambling{cursor:default}
-.hero-title .t2{transition:color .15s}
-.hero-title.scrambling .t1,
-.hero-title.scrambling .t3{color:var(--gold-lt)}
-
-/* Magnetic CTAs — transition handles the spring-return */
-.btn-primary,.btn-ghost{transition:background .2s,color .2s,border-color .2s,
-  transform .25s cubic-bezier(.18,.89,.32,1.28)}
-.btn-primary.magnet-active,.btn-ghost.magnet-active{transition:transform .04s linear}
-
 /* Section-label digit-flip — JS swaps the number; the label stays in the same slot */
 .section-label .digit{display:inline-block;font-variant-numeric:tabular-nums}
 
@@ -73,9 +57,6 @@
 
 /* Reduced-motion: bars snap to base envelope, no interaction */
 @media (prefers-reduced-motion: reduce){
-  #bg-gl{display:none}
-  .hero-title{white-space:normal}
-  .btn-primary,.btn-ghost{transition:background .2s,color .2s,border-color .2s}
   .hero-wave-bars{cursor:auto}
   .hero-wave-bar{transition:none}
   @supports (animation-timeline: view()) {
