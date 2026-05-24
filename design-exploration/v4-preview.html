@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>V4 · Interactive / playful — original variant preview</title>
+<link rel="stylesheet" href="/assets/fonts.css">
+<style>
+:root{
+  --f-bg:#0f0d0a;--f-bg-soft:rgba(244,237,224,0.06);
+  --f-ink:#f4ede0;--f-muted:rgba(244,237,224,0.72);--f-mute2:rgba(244,237,224,0.5);
+  --f-bronze:#B89355;--f-bronze-lt:#C7AA79;--f-gold:#F2AF4C;--f-coral:#F07B49;
+  --f-live:#8FB15A;
+  --f-display:'Bebas Neue','Impact',sans-serif;
+  --f-body:'Open Sans',system-ui,sans-serif;
+  --f-mono:ui-monospace,'SF Mono','JetBrains Mono','Menlo',monospace;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{background:var(--f-bg);color:var(--f-ink);font-family:var(--f-body)}
+body{
+  position:relative;overflow-x:hidden;min-height:100vh;
+  background-image:
+    radial-gradient(circle at 20% 30%,rgba(242,175,76,0.06),transparent 50%),
+    radial-gradient(circle at 80% 70%,rgba(240,123,73,0.05),transparent 50%);
+}
+body::before{
+  content:'';position:fixed;inset:0;pointer-events:none;opacity:.5;z-index:0;
+  background-image:radial-gradient(rgba(244,237,224,0.08) 1px,transparent 1px);
+  background-size:24px 24px;
+}
+a{color:inherit;text-decoration:none}
+button{font:inherit;cursor:pointer;border:0;background:0;color:inherit}
+ul{list-style:none}
+
+/* TOPBAR */
+.topbar{
+  position:absolute;top:0;left:0;right:0;padding:22px 40px;z-index:10;
+  display:flex;justify-content:space-between;align-items:center;
+}
+.topbar .logo{
+  font-family:var(--f-display);font-size:22px;letter-spacing:.28em;
+  color:var(--f-gold);display:flex;align-items:center;gap:12px;
+}
+.topbar .right{display:flex;gap:12px;align-items:center}
+.topbar .right .pill{
+  padding:8px 16px;border:1px solid rgba(244,237,224,0.2);border-radius:999px;
+  font-size:11px;letter-spacing:.2em;text-transform:uppercase;
+  color:rgba(244,237,224,0.7);display:inline-flex;align-items:center;gap:8px;
+}
+.topbar .right .pill .dot{width:7px;height:7px;border-radius:50%;background:var(--f-live)}
+.topbar .right .pill.cta{
+  background:var(--f-gold);color:#0f0d0a;border-color:var(--f-gold);font-weight:700;
+}
+
+/* HERO */
+section{position:relative;z-index:1}
+.hero{padding:110px 60px 0;position:relative}
+.hint{
+  font-family:var(--f-mono);font-size:11px;letter-spacing:.22em;text-transform:uppercase;
+  color:var(--f-gold);margin-bottom:18px;display:flex;gap:14px;align-items:center;
+}
+.hint .cursor{width:14px;height:14px;border:2px solid var(--f-gold);border-radius:50%;position:relative}
+.hint .cursor::after{
+  content:'';position:absolute;left:50%;top:50%;width:4px;height:4px;
+  background:var(--f-gold);border-radius:50%;transform:translate(-50%,-50%);
+}
+
+.hero h1{
+  font-family:var(--f-display);font-size:132px;line-height:.92;letter-spacing:.005em;
+  max-width:800px;
+}
+.hero h1 .word{color:var(--f-ink);display:block}
+.hero h1 .row{display:flex;align-items:center;gap:18px}
+.hero h1 .blank{
+  display:inline-flex;align-items:center;justify-content:center;
+  height:116px;padding:0 26px;background:rgba(244,237,224,0.06);
+  border:2px dashed rgba(242,175,76,0.6);border-radius:22px;
+  color:var(--f-gold);font-family:var(--f-display);cursor:pointer;
+  transition:background .2s,transform .2s;user-select:none;
+}
+.hero h1 .blank:hover{background:rgba(242,175,76,0.16);transform:rotate(-1.5deg)}
+
+.hero .sub{
+  font-size:18px;line-height:1.7;color:var(--f-muted);max-width:640px;margin-top:36px;
+}
+.hero .sub .em{color:var(--f-gold)}
+
+/* Reactive waveform card */
+.wavebox{
+  position:absolute;top:130px;right:60px;width:480px;height:420px;
+  background:rgba(244,237,224,0.03);border:1px solid rgba(244,237,224,0.1);
+  border-radius:22px;padding:22px 24px 70px;
+}
+.wavebox .lbl{
+  font-family:var(--f-mono);font-size:10px;letter-spacing:.28em;text-transform:uppercase;
+  color:var(--f-mute2);display:flex;justify-content:space-between;
+}
+.wavebox .lbl .live{color:var(--f-live);display:inline-flex;align-items:center;gap:6px}
+.wavebox .lbl .live .dot{
+  width:7px;height:7px;border-radius:50%;background:var(--f-live);
+  animation:v4pulse 1.4s ease-in-out infinite;
+}
+@keyframes v4pulse{50%{opacity:.3}}
+.wavebars{
+  position:absolute;left:26px;right:26px;top:56px;bottom:60px;
+  display:flex;align-items:flex-end;gap:6px;cursor:crosshair;
+}
+.wavebar{
+  flex:1;border-radius:6px 6px 2px 2px;min-height:12px;
+  transition:height 180ms cubic-bezier(.34,1.56,.64,1);
+}
+.wavebox .ctrl{
+  position:absolute;left:26px;right:26px;bottom:22px;display:flex;gap:8px;
+}
+.wavebox .ctrl button{
+  flex:1;padding:8px 10px;border-radius:8px;
+  background:rgba(244,237,224,0.05);border:1px solid rgba(244,237,224,0.12);
+  font-family:var(--f-mono);font-size:10px;letter-spacing:.18em;text-transform:uppercase;
+  color:rgba(244,237,224,0.78);
+}
+.wavebox .ctrl button:hover{
+  background:rgba(242,175,76,0.12);color:var(--f-gold);border-color:rgba(242,175,76,0.3);
+}
+.wavebox .ctrl button.active{
+  background:rgba(242,175,76,0.18);color:var(--f-gold);border-color:var(--f-gold);
+}
+
+.hero .actions{display:flex;gap:14px;margin-top:44px}
+.hero .actions a{
+  padding:16px 32px;border-radius:999px;font-size:12px;letter-spacing:.24em;
+  text-transform:uppercase;font-weight:700;transition:transform .15s;
+}
+.hero .actions a:hover{transform:translateY(-2px)}
+.hero .actions .primary{
+  background:var(--f-gold);color:#0f0d0a;box-shadow:0 8px 24px -4px rgba(242,175,76,0.4);
+}
+.hero .actions .ghost{border:1px solid rgba(244,237,224,0.3);color:rgba(244,237,224,0.9)}
+
+/* WHAT */
+.what{padding:100px 60px;position:relative}
+.what .lbl{
+  font-family:var(--f-mono);font-size:11px;letter-spacing:.28em;text-transform:uppercase;
+  color:var(--f-gold);margin-bottom:14px;
+}
+.what h2{
+  font-family:var(--f-display);font-size:110px;line-height:.94;letter-spacing:.005em;
+  color:var(--f-ink);max-width:14ch;
+}
+.what h2 .gold{color:var(--f-gold)}
+.what .intro{
+  font-size:16px;line-height:1.7;color:rgba(244,237,224,0.7);max-width:540px;margin-top:28px;
+}
+.chips{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin-top:56px}
+.chip{
+  padding:30px 32px;background:rgba(244,237,224,0.04);
+  border:1px solid rgba(244,237,224,0.12);border-radius:22px;cursor:pointer;
+  transition:transform .25s cubic-bezier(.34,1.56,.64,1),background .2s,border-color .2s;
+  position:relative;overflow:hidden;
+}
+.chip:hover{
+  transform:translateY(-4px) rotate(-0.6deg);
+  background:rgba(242,175,76,0.07);border-color:rgba(242,175,76,0.4);
+}
+.chip:nth-child(2):hover{transform:translateY(-4px) rotate(0.6deg)}
+.chip:nth-child(3):hover{transform:translateY(-4px) rotate(0.4deg)}
+.chip:nth-child(4):hover{transform:translateY(-4px) rotate(-0.4deg)}
+.chip .num{
+  font-family:var(--f-display);font-size:56px;letter-spacing:.025em;color:var(--f-gold);
+  line-height:1;
+}
+.chip h3{
+  font-family:var(--f-display);font-size:28px;letter-spacing:.04em;color:var(--f-ink);
+  text-transform:uppercase;margin:10px 0 12px;
+}
+.chip p{font-size:13px;line-height:1.7;color:rgba(244,237,224,0.7)}
+.chip .blob{
+  position:absolute;right:-40px;top:-40px;width:120px;height:120px;border-radius:50%;
+  background:radial-gradient(circle,rgba(242,175,76,0.18),transparent 70%);
+  pointer-events:none;opacity:0;transition:opacity .3s;
+}
+.chip:hover .blob{opacity:1}
+
+/* MANIFESTO */
+.manifesto{padding:100px 60px 120px;position:relative}
+.manifesto .lbl{
+  font-family:var(--f-mono);font-size:11px;letter-spacing:.28em;text-transform:uppercase;
+  color:var(--f-gold);margin-bottom:22px;
+}
+.manifesto p.big{
+  font-family:var(--f-display);font-size:130px;line-height:1;letter-spacing:.01em;
+  color:var(--f-ink);max-width:18ch;
+}
+.manifesto .swap{
+  display:inline-block;position:relative;cursor:pointer;
+  color:transparent;-webkit-text-stroke:1.5px var(--f-gold);
+  transition:-webkit-text-stroke .2s,color .3s;
+}
+.manifesto .swap:hover{color:var(--f-gold);-webkit-text-stroke:1.5px transparent}
+.manifesto .swap::after{
+  content:'↩';position:absolute;top:-10px;right:-40px;
+  font-family:var(--f-mono);font-size:20px;color:var(--f-gold);
+  opacity:0;transition:opacity .2s,transform .2s;
+}
+.manifesto .swap:hover::after{opacity:1;transform:translateY(-4px)}
+.manifesto p.sub{
+  font-size:15px;line-height:1.85;color:rgba(244,237,224,0.65);max-width:520px;margin-top:40px;
+}
+
+.fineprint{
+  position:fixed;bottom:14px;left:14px;z-index:20;
+  font-family:var(--f-mono);font-size:10px;letter-spacing:.18em;text-transform:uppercase;
+  color:rgba(244,237,224,0.32);background:rgba(15,13,10,.6);padding:6px 10px;border-radius:999px;
+}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="logo">
+    <svg width="28" height="20" viewBox="0 0 50 32" fill="none" aria-label="Factiv">
+      <rect x="0"  y="10" width="7" height="12" rx="3.5" fill="#B89355"/>
+      <rect x="10" y="4"  width="7" height="24" rx="3.5" fill="#C7AA79"/>
+      <rect x="20" y="7"  width="7" height="18" rx="3.5" fill="#F2AF4C"/>
+      <rect x="30" y="0"  width="7" height="32" rx="3.5" fill="#F07B49"/>
+      <rect x="40" y="7"  width="7" height="18" rx="3.5" fill="#F2AF4C"/>
+    </svg>
+    FACTIV
+  </div>
+  <div class="right">
+    <div class="pill"><span class="dot"></span>2 BUILDERS · ACCEPTING</div>
+    <div class="pill cta">Start a project</div>
+  </div>
+</div>
+
+<section class="hero">
+  <div class="hint"><span class="cursor"></span>Hover the waveform. Tap a word. Try it.</div>
+  <h1>
+    <span class="word">AGENTIC</span>
+    <span class="word">SOFTWARE</span>
+    <div class="row">
+      <span class="word">THAT</span>
+      <span class="blank" id="hero-blank">SHIPS</span>
+    </div>
+  </h1>
+  <p class="sub">
+    A Germany-based studio of two builders. We build AI that actually
+    <span class="em" id="hero-em">ships</span>
+    — across regulated SMB, institutional due-diligence and consumer fintech.
+  </p>
+
+  <div class="wavebox" id="wavebox">
+    <div class="lbl">
+      <span>FACTIV / WAVEMARK · LIVE</span>
+      <span class="live"><span class="dot"></span>REACTIVE</span>
+    </div>
+    <div class="wavebars" id="wavebars"></div>
+    <div class="ctrl">
+      <button data-mode="ship" class="active">Ships</button>
+      <button data-mode="runs">Runs</button>
+      <button data-mode="pays">Pays</button>
+    </div>
+  </div>
+
+  <div class="actions">
+    <a class="primary" href="#what">How we work</a>
+    <a class="ghost" href="#">Start a project</a>
+  </div>
+</section>
+
+<section class="what" id="what">
+  <div class="lbl">01 — What we build · poke any</div>
+  <h2>Four shapes,<br>all <span class="gold">shipping.</span></h2>
+  <p class="intro">
+    Each chip is a service in production right now. Hover them. Each represents
+    weeks-to-months of real engineering — DSGVO- and EU-AI-Act-aware by default.
+  </p>
+  <div class="chips">
+    <div class="chip"><div class="blob"></div><div class="num">01</div><h3>Agentic workflow automation</h3><p>End-to-end autonomous processes that replace manual work — voice intake, document extraction, multi-step decision flows, compliance checks.</p></div>
+    <div class="chip"><div class="blob"></div><div class="num">02</div><h3>Agent architecture &amp; integration</h3><p>Connecting LLMs, vector stores, tools, and APIs into coherent systems that sit inside your existing infrastructure. DSGVO- and EU-AI-Act-aware by default.</p></div>
+    <div class="chip"><div class="blob"></div><div class="num">03</div><h3>Custom agent development</h3><p>Bespoke agents with memory, tool use, and reasoning — built to your domain, your data, your audit trail.</p></div>
+    <div class="chip"><div class="blob"></div><div class="num">04</div><h3>Strategy &amp; enablement</h3><p>For teams who know they need agentic AI but don't know where to start. Scoped discovery, architecture sketching, small-team enablement. One to three weeks.</p></div>
+  </div>
+</section>
+
+<section class="manifesto">
+  <div class="lbl">02 — Our belief · hover to commit</div>
+  <p class="big">
+    Most AI projects<br>
+    produce <span class="swap">demos.</span><br>
+    We produce<br>
+    <span class="swap">software.</span>
+  </p>
+  <p class="sub">
+    The agentic revolution is real. The engineering reality hasn't caught up.
+    We've spent the last few years building the systems most teams are still pitching —
+    production-grade, auditable, monitored, paid-for.
+  </p>
+</section>
+
+<div class="fineprint">V4 original · faithful render of design-exploration/V4-Interactive.jsx</div>
+
+<script>
+(function(){
+  const N = 24;
+  const bars = document.getElementById('wavebars');
+  const blank = document.getElementById('hero-blank');
+  const em = document.getElementById('hero-em');
+  const ctrlBtns = document.querySelectorAll('.wavebox .ctrl button');
+
+  const base = Array.from({length:N},(_,i)=>{
+    const t = i/(N-1);
+    const v = Math.sin(t*Math.PI)*0.7 + 0.3 + Math.sin(t*Math.PI*4)*0.08;
+    return Math.max(0.15, Math.min(1, v));
+  });
+  const els = [];
+  for (let i=0;i<N;i++){
+    const d = document.createElement('div');
+    d.className = 'wavebar';
+    const t = i/(N-1);
+    const hue = i < N*0.2 ? '#B89355' : i < N*0.4 ? '#C7AA79' : i < N*0.6 ? '#F2AF4C' : i < N*0.8 ? '#F07B49' : '#F2AF4C';
+    d.dataset.hue = hue;
+    d.style.background = hue;
+    d.style.height = (base[i]*100) + '%';
+    bars.appendChild(d);
+    els.push(d);
+  }
+  let hover = null;
+  function paint(){
+    for (let i=0;i<N;i++){
+      const t = i/(N-1);
+      let scale = base[i];
+      let glow = false;
+      if (hover){
+        const d = Math.abs(t - hover.x);
+        const peak = Math.max(0, 1 - d*6);
+        scale = base[i]*0.5 + peak*hover.y*1.1;
+        glow = d < 0.08;
+      }
+      scale = Math.max(0.06, Math.min(1, scale));
+      els[i].style.height = (scale*100)+'%';
+      els[i].style.boxShadow = glow ? `0 0 24px ${els[i].dataset.hue}` : 'none';
+    }
+  }
+  bars.addEventListener('mousemove', e=>{
+    const r = bars.getBoundingClientRect();
+    hover = { x:(e.clientX-r.left)/r.width, y:1-(e.clientY-r.top)/r.height };
+    paint();
+  });
+  bars.addEventListener('mouseleave', ()=>{ hover=null; paint(); });
+  paint();
+
+  const labels = { ship:['SHIPS','ships'], runs:['RUNS','runs in your stack'], pays:['PAYS','gets paid for'] };
+  function setMode(m){
+    blank.textContent = labels[m][0];
+    em.textContent = labels[m][1];
+    ctrlBtns.forEach(b=>b.classList.toggle('active', b.dataset.mode===m));
+  }
+  blank.addEventListener('click', ()=>{
+    const order = ['ship','runs','pays'];
+    const cur = Array.from(ctrlBtns).find(b=>b.classList.contains('active')).dataset.mode;
+    setMode(order[(order.indexOf(cur)+1)%3]);
+  });
+  ctrlBtns.forEach(b=>b.addEventListener('click', ()=>setMode(b.dataset.mode)));
+})();
+</script>
+</body>
+</html>

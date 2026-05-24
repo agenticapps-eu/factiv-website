@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>V4 second-pass merge — prototype index</title>
+<link rel="stylesheet" href="/assets/fonts.css">
+<style>
+:root{
+  --bg:#0f0d0a;--ink:#f4ede0;--muted:rgba(244,237,224,0.65);
+  --gold:#F2AF4C;--bronze:#B89355;--coral:#F07B49;--live:#8FB15A;
+  --mono:ui-monospace,'SF Mono','JetBrains Mono','Menlo',monospace;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{
+  background:var(--bg);color:var(--ink);font-family:'Open Sans',sans-serif;
+  min-height:100vh;padding:60px 8vw;position:relative;
+  background-image:
+    radial-gradient(circle at 20% 30%,rgba(242,175,76,0.06),transparent 50%),
+    radial-gradient(circle at 80% 70%,rgba(240,123,73,0.05),transparent 50%);
+}
+body::before{
+  content:'';position:fixed;inset:0;pointer-events:none;opacity:.5;z-index:0;
+  background-image:radial-gradient(rgba(244,237,224,0.08) 1px,transparent 1px);
+  background-size:24px 24px;
+}
+.wrap{position:relative;z-index:1;max-width:1200px;margin:0 auto}
+.eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:14px}
+h1{font-family:'Bebas Neue',sans-serif;font-size:clamp(48px,7vw,96px);line-height:.95;letter-spacing:2px;margin-bottom:24px}
+.lead{font-size:16px;line-height:1.7;color:var(--muted);max-width:680px;margin-bottom:60px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:22px}
+.card{padding:32px 34px;background:rgba(244,237,224,0.04);border:1px solid rgba(244,237,224,0.12);border-radius:22px;text-decoration:none;color:inherit;transition:transform .25s cubic-bezier(.34,1.56,.64,1),background .2s,border-color .2s;display:flex;flex-direction:column;gap:14px}
+.card:hover{transform:translateY(-4px);background:rgba(242,175,76,0.07);border-color:rgba(242,175,76,0.4)}
+.card .tag{font-family:var(--mono);font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);display:flex;justify-content:space-between;align-items:center}
+.card .tag .live{color:var(--live);display:inline-flex;align-items:center;gap:6px}
+.card .tag .live::before{content:'';width:7px;height:7px;border-radius:50%;background:var(--live);animation:p 1.4s ease-in-out infinite}
+@keyframes p{50%{opacity:.3}}
+.card h2{font-family:'Bebas Neue',sans-serif;font-size:32px;letter-spacing:1px;color:var(--ink)}
+.card p{font-size:13px;line-height:1.65;color:var(--muted)}
+.card .meta{font-family:var(--mono);font-size:10px;letter-spacing:2px;text-transform:uppercase;color:rgba(244,237,224,0.4);margin-top:auto;padding-top:14px;border-top:1px solid rgba(244,237,224,0.08)}
+.v4{border-color:rgba(242,175,76,0.4);background:rgba(242,175,76,0.04)}
+.live-link{display:inline-flex;align-items:center;gap:8px;font-family:var(--mono);font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);text-decoration:none;margin-top:36px}
+.live-link::before{content:'→';color:var(--gold)}
+.live-link:hover{color:var(--gold)}
+@media(max-width:768px){.grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="eyebrow">V4 second-pass merge · prototype index</div>
+  <h1>Four prototypes,<br>side by side.</h1>
+  <p class="lead">
+    Open each in its own tab and compare. <strong style="color:var(--ink)">V4 original</strong> is the reference render of <code>design-exploration/V4-Interactive.jsx</code>. <strong style="color:var(--ink)">Alt A / B / C</strong> are three increasingly aggressive merges of V4 into the current site, in response to "the first merge neglected most of V4."
+  </p>
+
+  <div class="grid">
+    <a class="card v4" href="/design-exploration/v4-preview.html" target="_blank">
+      <div class="tag">V4 original · reference<span class="live">FAITHFUL</span></div>
+      <h2>V4 / Interactive · playful</h2>
+      <p>Faithful render of the V4 source — 3-line stacked headline, 24-bar waveform card, 2×2 chip grid with tilt and blob hover, hover-fill manifesto with ↩, dot-grid background, two radial glows. No FACTIV wordmark in hero.</p>
+      <div class="meta">design-exploration/v4-preview.html</div>
+    </a>
+
+    <a class="card" href="/design-exploration/alt-a.html" target="_blank">
+      <div class="tag">Alt A · smallest aggressive change<span class="live">~1 commit</span></div>
+      <h2>Hero takeover</h2>
+      <p>Drop the FACTIV scramble wordmark from hero. Adopt V4's 3-line stacked headline with cycling word. Wrap waveform in rounded card with mono header (WAVEMARK · LIVE · REACTIVE) and pills inside. Everything below hero unchanged.</p>
+      <div class="meta">design-exploration/alt-a.html</div>
+    </a>
+
+    <a class="card" href="/design-exploration/alt-b.html" target="_blank">
+      <div class="tag">Alt B · recommended<span class="live">~3–4 commits</span></div>
+      <h2>Hero + services + buttons</h2>
+      <p>Alt A + 2×2 chip grid for services with tilt &amp; blob hover. Pill-rounded buttons. Rounded about cards. V4 mono section labels. Mesh + particles + ticker + manifesto scroll-fill + metrics band kept.</p>
+      <div class="meta">design-exploration/alt-b.html</div>
+    </a>
+
+    <a class="card" href="/design-exploration/alt-c.html" target="_blank">
+      <div class="tag">Alt C · V4 dominant<span class="live">~6–8 commits</span></div>
+      <h2>V4 becomes the page</h2>
+      <p>Alt B + drop section alternation. Drop mesh + particles entirely in favour of dot-grid + radial glows. Manifesto adopts V4 hover-fill ↩ instead of scroll-fill. Metrics band replaced with 3 instrument cards. Process steps become rounded cards.</p>
+      <div class="meta">design-exploration/alt-c.html</div>
+    </a>
+  </div>
+
+  <a class="live-link" href="/" target="_blank">Open the current merged site (post-PR-#3) for comparison</a>
+</div>
+</body>
+</html>

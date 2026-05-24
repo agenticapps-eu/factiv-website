@@ -9,118 +9,8 @@
 
   var REDUCED = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  /* ---------- 1. WebGL gold-coral mesh ---------------------- */
-  function startMesh() {
-    if (REDUCED) return;
-    var host = document.getElementById('bg-canvas');
-    if (!host) return;
-    var cv = document.createElement('canvas');
-    cv.id = 'bg-gl';
-    cv.setAttribute('aria-hidden', 'true');
-    document.body.insertBefore(cv, host);
-
-    var gl = cv.getContext('webgl') || cv.getContext('experimental-webgl');
-    if (!gl) { cv.remove(); return; } // fallback: existing canvas particles only
-
-    var VS = [
-      'attribute vec2 a;',
-      'void main(){ gl_Position = vec4(a,0.0,1.0); }'
-    ].join('\n');
-
-    var FS = [
-      'precision mediump float;',
-      'uniform vec2 uRes;',
-      'uniform vec2 uMouse;',
-      'uniform float uTime;',
-      'float hash(vec2 p){ return fract(sin(dot(p, vec2(127.1,311.7)))*43758.5453); }',
-      'float noise(vec2 p){',
-      '  vec2 i=floor(p), f=fract(p);',
-      '  vec2 u=f*f*(3.0-2.0*f);',
-      '  return mix(mix(hash(i),hash(i+vec2(1.0,0.0)),u.x),',
-      '             mix(hash(i+vec2(0.0,1.0)),hash(i+vec2(1.0,1.0)),u.x), u.y);',
-      '}',
-      'float fbm(vec2 p){',
-      '  float v=0.0, a=0.55;',
-      '  for(int i=0;i<5;i++){ v += a*noise(p); p *= 2.02; a *= 0.5; }',
-      '  return v;',
-      '}',
-      'void main(){',
-      '  vec2 uv = gl_FragCoord.xy / uRes;',
-      '  vec2 mouse = uMouse / uRes;',
-      '  vec2 q = uv * 1.6 + vec2(uTime*0.022, uTime*-0.014);',
-      '  q += (mouse - 0.5) * 0.35;',
-      '  float n = fbm(q);',
-      '  n += 0.12 * fbm(q*3.2 + vec2(uTime*0.04, 0.0));',
-      '  vec3 cBg    = vec3(0.067,0.067,0.067);',
-      '  vec3 cDark  = vec3(0.722,0.576,0.333);',
-      '  vec3 cGold  = vec3(0.949,0.686,0.298);',
-      '  vec3 cCoral = vec3(0.941,0.482,0.286);',
-      '  vec3 col;',
-      '  if(n < 0.45)      col = mix(cBg,   cDark,  smoothstep(0.05, 0.45, n));',
-      '  else if(n < 0.72) col = mix(cDark, cGold,  smoothstep(0.45, 0.72, n));',
-      '  else              col = mix(cGold, cCoral, smoothstep(0.72, 1.00, n));',
-      '  float vig = smoothstep(1.10, 0.30, length(uv-0.5));',
-      '  col *= mix(0.55, 1.0, vig);',
-      '  gl_FragColor = vec4(col, 1.0);',
-      '}'
-    ].join('\n');
-
-    function compile(type, src) {
-      var s = gl.createShader(type);
-      gl.shaderSource(s, src); gl.compileShader(s);
-      if (!gl.getShaderParameter(s, gl.COMPILE_STATUS)) {
-        console.warn('factiv mesh shader compile failed:', gl.getShaderInfoLog(s));
-        gl.deleteShader(s); return null;
-      }
-      return s;
-    }
-    var vs = compile(gl.VERTEX_SHADER, VS);
-    var fs = compile(gl.FRAGMENT_SHADER, FS);
-    if (!vs || !fs) { cv.remove(); return; }
-
-    var prog = gl.createProgram();
-    gl.attachShader(prog, vs); gl.attachShader(prog, fs); gl.linkProgram(prog);
-    if (!gl.getProgramParameter(prog, gl.LINK_STATUS)) { cv.remove(); return; }
-    gl.useProgram(prog);
-
-    var buf = gl.createBuffer();
-    gl.bindBuffer(gl.ARRAY_BUFFER, buf);
-    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1,-1, 1,-1, -1,1, 1,1]), gl.STATIC_DRAW);
-    var loc = gl.getAttribLocation(prog, 'a');
-    gl.enableVertexAttribArray(loc);
-    gl.vertexAttribPointer(loc, 2, gl.FLOAT, false, 0, 0);
-
-    var uRes   = gl.getUniformLocation(prog, 'uRes');
-    var uMouse = gl.getUniformLocation(prog, 'uMouse');
-    var uTime  = gl.getUniformLocation(prog, 'uTime');
-
-    function resize() {
-      var dpr = Math.min(window.devicePixelRatio || 1, 1.5);
-      cv.width  = Math.floor(window.innerWidth  * dpr);
-      cv.height = Math.floor(window.innerHeight * dpr);
-      cv.style.width  = window.innerWidth  + 'px';
-      cv.style.height = window.innerHeight + 'px';
-      gl.viewport(0, 0, cv.width, cv.height);
-      gl.uniform2f(uRes, cv.width, cv.height);
-    }
-    resize();
-    window.addEventListener('resize', resize);
-
-    var mx = 0, my = 0;
-    window.addEventListener('mousemove', function (e) {
-      var dpr = Math.min(window.devicePixelRatio || 1, 1.5);
-      mx = e.clientX * dpr;
-      my = (window.innerHeight - e.clientY) * dpr; // flip for GL coords
-    }, { passive: true });
-
-    var t0 = performance.now();
-    (function frame() {
-      gl.uniform1f(uTime, (performance.now() - t0) / 1000);
-      gl.uniform2f(uMouse, mx || cv.width / 2, my || cv.height / 2);
-      gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
-      requestAnimationFrame(frame);
-    })();
-  }
+  /* ---------- 1. (removed) WebGL gold-coral mesh ------------- */
+  // Dropped with V4 second-pass: dot-grid + radial glows replace mesh+particles.
 
   /* ---------- 2. Scramble-decode wordmark ------------------- */
   function startScramble() {
@@ -179,28 +69,8 @@
     title.addEventListener('click', run);
   }
 
-  /* ---------- 3. Magnetic hero CTAs -------------------------- */
-  function startMagnetic() {
-    if (REDUCED) return;
-    var ctas = document.querySelectorAll('#hero .btn-primary, #hero .btn-ghost');
-    var MAX = 10; // px
-    Array.prototype.forEach.call(ctas, function (btn) {
-      btn.addEventListener('mousemove', function (e) {
-        var r = btn.getBoundingClientRect();
-        var dx = (e.clientX - (r.left + r.width / 2));
-        var dy = (e.clientY - (r.top  + r.height / 2));
-        // Clamp displacement so the button only drifts ~MAX px in either direction.
-        var tx = Math.max(-MAX, Math.min(MAX, dx * 0.28));
-        var ty = Math.max(-MAX, Math.min(MAX,  dy * 0.28));
-        btn.classList.add('magnet-active');
-        btn.style.transform = 'translate(' + tx.toFixed(1) + 'px,' + ty.toFixed(1) + 'px)';
-      });
-      btn.addEventListener('mouseleave', function () {
-        btn.classList.remove('magnet-active');
-        btn.style.transform = '';
-      });
-    });
-  }
+  /* ---------- 3. (removed) Magnetic hero CTAs ---------------- */
+  // Dropped with V4 second-pass: V4 buttons use only translateY(-2px) on hover.
 
   /* ---------- 4. Section-label digit flip ------------------- */
   function startDigitFlip() {
@@ -235,74 +105,73 @@
     Array.prototype.forEach.call(labels, function (l) { obs.observe(l); });
   }
 
-  /* ---------- 5. Interactive 7-bar wavemark ----------------- */
+  /* ---------- 5. Interactive 24-bar wavemark (V4 port) ------ */
+  // Container is a #wavebars div. JS populates 24 children. Each bar gets
+  // style.height (not --scale + transform); CSS transition: height 180ms
+  // cubic-bezier(.34,1.56,.64,1) handles the spring. Hover peak with sharp
+  // (1 - d*6) falloff. Coloured box-shadow glow on bars within 8% of cursor.
   function startWaveform() {
-    var host = document.querySelector('.hero-wave');
+    var host = document.getElementById('wavebars');
     if (!host) return;
-    var bars = host.querySelectorAll('.hero-wave-bar');
-    if (bars.length !== 7) return;
-
-    // Rest envelope — symmetric, centre tallest. Echoes the 6-bar watermark glyph.
-    var rest  = [0.35, 0.75, 0.55, 1.00, 0.55, 0.75, 0.35];
-    // Phase offsets so idle drift breathes out of sync across bars.
-    var phase = [0.0,  0.7,  1.4,  2.1,  2.8,  3.5,  4.2];
-
-    function setScale(i, s) {
-      bars[i].style.setProperty('--scale', s.toFixed(3));
+    var N = 24;
+    // Sin-pi base envelope with harmonic — same as V4-Interactive.jsx.
+    var base = [];
+    for (var i = 0; i < N; i++) {
+      var t = i / (N - 1);
+      var v = Math.sin(t * Math.PI) * 0.7 + 0.3 + Math.sin(t * Math.PI * 4) * 0.08;
+      base.push(Math.max(0.15, Math.min(1, v)));
     }
-
-    // Reduced motion: snap to rest, do nothing else.
-    if (REDUCED) {
-      for (var i = 0; i < bars.length; i++) setScale(i, rest[i]);
-      return;
+    // Brand gradient across the 5 wavemark colours, spread across 24 bars.
+    function hueFor(i) {
+      if (i < N * 0.2)  return '#B89355';
+      if (i < N * 0.4)  return '#C7AA79';
+      if (i < N * 0.6)  return '#F2AF4C';
+      if (i < N * 0.8)  return '#F07B49';
+      return '#F2AF4C';
     }
+    var els = [];
+    for (var k = 0; k < N; k++) {
+      var d = document.createElement('div');
+      d.className = 'hero-wave-bar';
+      d.dataset.hue = hueFor(k);
+      d.style.background = d.dataset.hue;
+      d.style.height = (base[k] * 100) + '%';
+      host.appendChild(d);
+      els.push(d);
+    }
+    if (REDUCED) return; // bars rest at base envelope, no interaction
 
-    var hover = null; // {x: 0..1} or null
-
-    function update(clientX) {
+    var hover = null;
+    function paint() {
+      for (var i = 0; i < N; i++) {
+        var ti = i / (N - 1);
+        var scale = base[i];
+        var glow = false;
+        if (hover) {
+          var dx = Math.abs(ti - hover.x);
+          var peak = Math.max(0, 1 - dx * 6);
+          scale = base[i] * 0.5 + peak * hover.y * 1.1;
+          glow = dx < 0.08;
+        }
+        scale = Math.max(0.06, Math.min(1, scale));
+        els[i].style.height = (scale * 100) + '%';
+        els[i].style.boxShadow = glow ? '0 0 24px ' + els[i].dataset.hue : 'none';
+      }
+    }
+    function setHover(clientX, clientY) {
       var r = host.getBoundingClientRect();
       if (r.width <= 0) return;
-      hover = { x: Math.max(0, Math.min(1, (clientX - r.left) / r.width)) };
+      hover = {
+        x: Math.max(0, Math.min(1, (clientX - r.left) / r.width)),
+        y: Math.max(0, Math.min(1, 1 - (clientY - r.top) / r.height))
+      };
+      paint();
     }
-
-    host.addEventListener('mousemove',  function (e) { update(e.clientX); },               { passive: true });
-    host.addEventListener('mouseleave', function ()  { hover = null; });
-    host.addEventListener('touchstart', function (e) { if (e.touches[0]) update(e.touches[0].clientX); }, { passive: true });
-    host.addEventListener('touchmove',  function (e) { if (e.touches[0]) update(e.touches[0].clientX); }, { passive: true });
-    host.addEventListener('touchend',   function ()  { hover = null; });
-
-    // Only burn frames while the wavemark is in view.
-    var active = true;
-    if ('IntersectionObserver' in window) {
-      var io = new IntersectionObserver(function (entries) {
-        active = entries[0].isIntersecting;
-      }, { threshold: 0.01 });
-      io.observe(host);
-    }
-
-    var t0 = performance.now();
-    (function frame() {
-      if (active) {
-        var t = (performance.now() - t0) / 1000;
-        for (var i = 0; i < bars.length; i++) {
-          var ti = i / (bars.length - 1);
-          // Idle drift: ±0.04 amplitude, ~6s period, per-bar phase offset.
-          var drift = Math.sin(t * (Math.PI * 2 / 6) + phase[i]) * 0.04;
-          var scale = rest[i] + drift;
-          if (hover) {
-            var d = Math.abs(ti - hover.x);
-            // 7 bars span a wider x-range each than V4's 24 bars, so use a gentler
-            // falloff (*4 instead of *6).
-            var peak = Math.max(0, 1 - d * 4);
-            scale = rest[i] + drift + peak * 0.5;
-          }
-          if (scale < 0.08) scale = 0.08;
-          if (scale > 1.05) scale = 1.05;
-          setScale(i, scale);
-        }
-      }
-      requestAnimationFrame(frame);
-    })();
+    host.addEventListener('mousemove',  function (e) { setHover(e.clientX, e.clientY); }, { passive: true });
+    host.addEventListener('mouseleave', function ()  { hover = null; paint(); });
+    host.addEventListener('touchstart', function (e) { if (e.touches[0]) setHover(e.touches[0].clientX, e.touches[0].clientY); }, { passive: true });
+    host.addEventListener('touchmove',  function (e) { if (e.touches[0]) setHover(e.touches[0].clientX, e.touches[0].clientY); }, { passive: true });
+    host.addEventListener('touchend',   function ()  { hover = null; paint(); });
   }
 
   /* ---------- 6. Cycling hero pivot (ships → runs → pays) --- */
@@ -392,9 +261,7 @@
     boot();
   }
   function boot() {
-    try { startMesh();         } catch (e) { console.warn('factiv mesh failed', e); }
     try { startScramble();     } catch (e) { console.warn('factiv scramble failed', e); }
-    try { startMagnetic();     } catch (e) { console.warn('factiv magnetic failed', e); }
     try { startDigitFlip();    } catch (e) { console.warn('factiv digit-flip failed', e); }
     try { startWaveform();     } catch (e) { console.warn('factiv waveform failed', e); }
     try { startCyclingPivot();      } catch (e) { console.warn('factiv pivot failed', e); }
