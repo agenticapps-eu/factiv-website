@@ -2,7 +2,7 @@
 
 > factiv richtet KI-Assistenten für kleine und mittlere Betriebe in Deutschland ein: einen KI-Telefonassistenten (eingehend und ausgehend) und ein Portal mit Modulen für E-Mail, Belege und E-Rechnung, Personal- und Tourenplanung, Wissen und Content. Betrieben in der EU, mit KI-Offenlegung am Telefon; alles, was nach außen geht, gibt der Betrieb frei.
 
-Anbieter: Donald Vlahovic, factiv, Vaihinger Straße 24, 71063 Sindelfingen. Kontakt: hello@factiv.eu
+Anbieter: Donald Vlahovic, factiv, Vaihinger Straße 24, 71063 Sindelfingen. Kontakt: info@factiv.eu
 
 ## Branchen
 - Zahnarztpraxen und Arztpraxen: Anrufannahme, Terminwünsche, Rückrufliste; Notfälle gehen sofort an Menschen, keine medizinische Einschätzung
